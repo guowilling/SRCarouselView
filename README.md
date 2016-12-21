@@ -1,6 +1,6 @@
 # SRInfiniteCarouselView
 
-### Easy to create infinite carousel view with the urls of images or local images.
+### Creating infinite carousel view with local images or the urls of images.
 
 ## Features
 
@@ -11,6 +11,8 @@
 
 ## Show pictures
 
+![image](./show.gif)
+![image](./show.png)
 
 ## Usage
 
