@@ -161,10 +161,10 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 - (void)setupImages {
     
     for (int i = 0; i < _imageArray.count; i++) {
-        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local image
+        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local images.
             [_images addObject:_imageArray[i]];
         }
-        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet image
+        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet images.
             if (_placeholderImage) {
                 [_images addObject:_placeholderImage];
             } else {

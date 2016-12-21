@@ -35,7 +35,7 @@
         infiniteCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
         [self.view addSubview:infiniteCarouselView];
     }
-
+    
     {
         // Local images.
         NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],

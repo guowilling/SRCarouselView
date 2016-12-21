@@ -18,27 +18,27 @@
 @interface SRInfiniteCarouselView : UIView
 
 /**
- The time interval of auto Paging, Default is 5.0s.
+ The interval between automatic page turning, default is 5.0s.
  */
 @property (nonatomic, assign) NSTimeInterval timeInterval;
 
 /**
- Current page indicator tint color.
+ The tint color of current page indicator.
  */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
 /**
- Other page indicator tint color.
+ The tint color of other page indicator.
  */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
 /**
- Current page indicator image.
+ The image of current page indicator.
  */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
 /**
- Other page indicator image.
+ The image of other page indicator.
  */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
