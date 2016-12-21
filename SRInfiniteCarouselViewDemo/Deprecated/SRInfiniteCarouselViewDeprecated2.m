@@ -6,35 +6,34 @@
 //  Copyright © 2016年 SR. All rights reserved.
 //
 
-#import "SRInifiniteCarouselExtensionView.h"
+#import "SRInfiniteCarouselViewDeprecated2.h"
 #import "SDWebImageDownloader.h"
 
-@interface SRInifiniteCarouselExtensionView () <UIScrollViewDelegate>
-
-@property (nonatomic, copy  ) NSArray   *images;
-
-@property (nonatomic, copy  ) NSArray   *imageURLStrings;
-@property (nonatomic, copy  ) NSString  *placeholderImageName;
-
-@property (nonatomic, assign) NSInteger  imageCount;
-
-@property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, assign) CGFloat  timeInterval;
+@interface SRInfiniteCarouselViewDeprecated2 () <UIScrollViewDelegate>
 
 @property (nonatomic, weak) UIPageControl *pageControl;
 @property (nonatomic, weak) UIScrollView  *scrollView;
 
-@property (weak, nonatomic) UIImageView *leftImageView;
-@property (weak, nonatomic) UIImageView *currentImageView;
-@property (weak, nonatomic) UIImageView *rightImageView;
+@property (nonatomic, copy) NSArray  *images;
+@property (nonatomic, copy) NSArray  *imageURLStrings;
+@property (nonatomic, copy) NSString *placeholderImageName;
+
+@property (nonatomic, weak) UIImageView *leftImageView;
+@property (nonatomic, weak) UIImageView *currentImageView;
+@property (nonatomic, weak) UIImageView *rightImageView;
+
+@property (nonatomic, assign) NSTimeInterval  timeInterval;
+@property (nonatomic, strong) NSTimer        *timer;
+
+@property (nonatomic, assign) NSInteger imageCount;
 
 @end
 
-@implementation SRInifiniteCarouselExtensionView
+@implementation SRInfiniteCarouselViewDeprecated2
 
 + (instancetype)sr_infiniteCarouselViewWithFrame:(CGRect)frame
                                       imageNames:(NSArray *)imageNames
-                                    timeInterval:(NSInteger)timeInterval
+                                    timeInterval:(NSTimeInterval)timeInterval
                    currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
                           pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
                                         delegate:(id<SRInifiniteCarouselExtensionViewDelegate>)delegate
@@ -49,7 +48,7 @@
 
 - (instancetype)initWithFrame:(CGRect)frame
                    imageNames:(NSArray *)imageNames
-                 timeInterval:(NSInteger)timeInterval
+                 timeInterval:(NSTimeInterval)timeInterval
 currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
        pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
                      delegate:(id<SRInifiniteCarouselExtensionViewDelegate>)delegate
@@ -70,7 +69,7 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
 + (instancetype)sr_infiniteCarouselViewWithFrame:(CGRect)frame
                                        imageURLs:(NSArray *)imageURLs
                             placeholderImageName:(NSString *)placeholderImageName
-                                    timeInterval:(NSInteger)timeInterval
+                                    timeInterval:(NSTimeInterval)timeInterval
                    currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
                           pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
                                         delegate:(id<SRInifiniteCarouselExtensionViewDelegate>)delegate
@@ -87,7 +86,7 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
 - (instancetype)initWithFrame:(CGRect)frame
                     imageURLs:(NSArray *)imageURLs
          placeholderImageName:(NSString *)placeholderImageName
-                 timeInterval:(NSInteger)timeInterval
+                 timeInterval:(NSTimeInterval)timeInterval
 currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
        pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
                      delegate:(id<SRInifiniteCarouselExtensionViewDelegate>)delegate
@@ -312,9 +311,9 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
     CGFloat imageViewW = self.scrollView.bounds.size.width;
     CGFloat imageViewH = self.scrollView.bounds.size.height;
     
-    self.leftImageView.frame = CGRectMake(0, 0, imageViewW, imageViewH);
+    self.leftImageView.frame    = CGRectMake(0, 0, imageViewW, imageViewH);
     self.currentImageView.frame = CGRectMake(imageViewW, 0, imageViewW, imageViewH);
-    self.rightImageView.frame = CGRectMake(imageViewW * 2, 0, imageViewW, imageViewH);
+    self.rightImageView.frame   = CGRectMake(imageViewW * 2, 0, imageViewW, imageViewH);
     
     self.scrollView.contentSize = CGSizeMake(imageViewW * 3, 0);
     

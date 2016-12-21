@@ -8,10 +8,8 @@
 
 #import "ViewController.h"
 #import "SRInfiniteCarouselView.h"
-#import "OneViewController.h"
-#import "TwoViewController.h"
 
-@interface ViewController ()
+@interface ViewController () <SRInfiniteCarouselViewDelegate>
 
 @end
 
@@ -21,33 +19,48 @@
     
     [super viewDidLoad];
     
-    self.title = @"InfiniteCarousel";
+    self.title = @"SRInfiniteCarouselView";
     
-    UIButton *oneBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    oneBtn.frame = CGRectMake(0, 0, 200, 50);
-    oneBtn.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame) - 50);
-    [oneBtn setTitle:@"n + 2 个 ImageView" forState:UIControlStateNormal];
-    [oneBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [oneBtn addTarget:self action:@selector(oneBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:oneBtn];
-    
-    UIButton *twoBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-    twoBtn.frame = CGRectMake(0, 0, 200, 50);
-    twoBtn.center = CGPointMake(CGRectGetMidX(self.view.frame), CGRectGetMidY(self.view.frame) + 50);
-    [twoBtn setTitle:@"3 个 ImageView" forState:UIControlStateNormal];
-    [twoBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [twoBtn addTarget:self action:@selector(twoBtnAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:twoBtn];
+    {
+        // URLs of images
+        NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
+                                @"http://i1.piimg.com/4851/a47d409e267eb871.png",
+                                @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
+                                @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
+        
+        SRInfiniteCarouselView *infiniteCarouselView = [SRInfiniteCarouselView sr_infiniteCarouselViewWithImageArrary:imageArray
+                                                                                                        describeArray:nil
+                                                                                                     placeholderImage:[UIImage imageNamed:@"placeholder"]
+                                                                                                             delegate:self];
+        infiniteCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
+        [self.view addSubview:infiniteCarouselView];
+    }
+
+    {
+        // Local images.
+        NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
+                                [UIImage imageNamed:@"coldplay02"],
+                                [UIImage imageNamed:@"coldplay03"],
+                                [UIImage imageNamed:@"coldplay04"]];
+        NSMutableArray *describeArray = [[NSMutableArray alloc] init];
+        for (NSInteger i = 0; i < imageArray.count; i++) {
+            NSString *tempDesc = [NSString stringWithFormat:@"图片描述%zd", i];
+            [describeArray addObject:tempDesc];
+        }
+        
+        SRInfiniteCarouselView *infiniteCarouselView = [SRInfiniteCarouselView sr_infiniteCarouselViewWithImageArrary:imageArray
+                                                                                                        describeArray:describeArray
+                                                                                                     placeholderImage:nil
+                                                                                                             delegate:self];
+        infiniteCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
+        infiniteCarouselView.timeInterval = 10.0;
+        [self.view addSubview:infiniteCarouselView];
+    }
 }
 
-- (void)oneBtnAction {
+- (void)infiniteCarouselViewDidTapImageAtIndex:(NSInteger)index {
     
-    [self.navigationController pushViewController:[OneViewController new] animated:YES];
-}
-
-- (void)twoBtnAction {
-    
-    [self.navigationController pushViewController:[TwoViewController new] animated:YES];
+    NSLog(@"%zd", index);
 }
 
 @end

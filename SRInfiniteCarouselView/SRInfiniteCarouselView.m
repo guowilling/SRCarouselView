@@ -2,308 +2,462 @@
 //  SRInfiniteCarouselView.m
 //  SRInfiniteCarouselViewDemo
 //
-//  Created by 郭伟林 on 16/9/3.
+//  Created by 郭伟林 on 16/12/21.
 //  Copyright © 2016年 SR. All rights reserved.
 //
 
 #import "SRInfiniteCarouselView.h"
-#import "UIImageView+WebCache.h"
+
+static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 @interface SRInfiniteCarouselView () <UIScrollViewDelegate>
 
-@property (nonatomic, copy  ) NSArray   *imageNames;
+@property (nonatomic, strong) NSOperationQueue *operationQueue;
 
-@property (nonatomic, copy  ) NSArray   *imageURLs;
-@property (nonatomic, copy  ) NSString  *placeholderImageName;
+@property (nonatomic, strong) NSArray *imageArray;
+@property (nonatomic, strong) NSArray *describeArray;
+@property (nonatomic, strong) UIImage *placeholderImage;
 
-@property (nonatomic, assign) NSInteger  imageCount;
+@property (nonatomic, strong) NSMutableArray      *images;
+@property (nonatomic, strong) NSMutableDictionary *imageDic;
+@property (nonatomic, strong) NSMutableDictionary *operationDic;
+
+@property (nonatomic, strong) UIScrollView  *scrollView;
+@property (nonatomic, strong) UIPageControl *pageControl;
+@property (nonatomic, strong) UILabel       *descLabel;
+
+@property (nonatomic, strong) UIImageView *currentImageView;
+@property (nonatomic, strong) UIImageView *nextImageView;
+
+@property (nonatomic, assign) NSInteger currentIndex;
+@property (nonatomic, assign) NSInteger nextIndex;
 
 @property (nonatomic, strong) NSTimer *timer;
-@property (nonatomic, assign) CGFloat  timeInterval;
-
-@property (nonatomic, weak) UIPageControl *pageControl;
-@property (nonatomic, weak) UIScrollView  *scrollView;
 
 @end
 
 @implementation SRInfiniteCarouselView
 
-+ (instancetype)sr_infiniteCarouselViewWithFrame:(CGRect)frame
-                                      imageNames:(NSArray *)imageNames
-                                    timeInterval:(NSInteger)timeInterval
-                   currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
-                          pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
-                                        delegate:(id<SRInfiniteCarouselViewDelegate>)delegate
-{
-    return [[self alloc] initWithFrame:frame
-                            imageNames:imageNames
-                          timeInterval:timeInterval
-         currentPageIndicatorTintColor:currentPageIndicatorTintColor
-                pageIndicatorTintColor:pageIndicatorTintColor
-                              delegate:delegate];
+#pragma mark - Lazy Load
+
+- (UILabel *)descLabel {
+    
+    if (!_descLabel) {
+        _descLabel = [[UILabel alloc] init];
+        _descLabel.backgroundColor = [UIColor colorWithWhite:0 alpha:0.5];
+        _descLabel.textColor = [UIColor whiteColor];
+        _descLabel.font = [UIFont systemFontOfSize:14];
+        _descLabel.textAlignment = NSTextAlignmentLeft;
+        _descLabel.hidden = YES;
+        [self addSubview:_descLabel];
+    }
+    return _descLabel;
 }
 
-+ (instancetype)sr_infiniteCarouselViewWithFrame:(CGRect)frame
-                                       imageURLs:(NSArray *)imageURLs
-                            placeholderImageName:(NSString *)placeholderImageName
-                                    timeInterval:(NSInteger)timeInterval
-                   currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
-                          pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
-                                        delegate:(id<SRInfiniteCarouselViewDelegate>)delegate
-{
-    return [[self alloc] initWithFrame:frame
-                             imageURLs:imageURLs
-                  placeholderImageName:placeholderImageName
-                          timeInterval:timeInterval
-         currentPageIndicatorTintColor:currentPageIndicatorTintColor
-                pageIndicatorTintColor:pageIndicatorTintColor
-                              delegate:delegate];
+#pragma mark - Init Methods
+
++ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary {
+    
+    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:nil];
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-                   imageNames:(NSArray *)imageNames
-                 timeInterval:(NSInteger)timeInterval
-currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
-       pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
-                     delegate:(id<SRInfiniteCarouselViewDelegate>)delegate
-{
-    if (self = [super initWithFrame:frame]) {
-        _delegate                      = delegate;
-        _imageNames                    = imageNames;
-        _imageCount                    = imageNames.count;
-        _timeInterval                  = timeInterval;
-        _currentPageIndicatorTintColor = currentPageIndicatorTintColor ?: [UIColor whiteColor];
-        _pageIndicatorTintColor        = pageIndicatorTintColor ?: [[UIColor whiteColor] colorWithAlphaComponent:0.5];
-        _pageControlBottomDistance     = 10.0f;
-        [self setupWithLocalImage];
-        [self startTimer];
++ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
+    
+    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
+}
+
++ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
+    
+    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
+}
+
++ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate {
+    
+    return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
+}
+
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary {
+    
+    return [self initWithImageArrary:imageArrary describeArray:nil];
+}
+
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
+    
+    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
+}
+
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
+    
+    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
+}
+
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate {
+    
+    if (self = [super init]) {
+        _imageArray       = imageArrary;
+        _describeArray    = describeArray;
+        _delegate         = delegate;
+        _placeholderImage = placeholderImage;
+        
+        _operationQueue = [[NSOperationQueue alloc] init];
+        _images         = [NSMutableArray array];
+        _imageDic       = [NSMutableDictionary dictionary];
+        _operationDic   = [NSMutableDictionary dictionary];
+        
+        [self setupContent];
     }
     return self;
 }
 
-- (instancetype)initWithFrame:(CGRect)frame
-                    imageURLs:(NSArray *)imageURLs
-         placeholderImageName:(NSString *)placeholderImageName
-                 timeInterval:(NSInteger)timeInterval
-currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
-       pageIndicatorTintColor:(UIColor *)pageIndicatorTintColor
-                     delegate:(id<SRInfiniteCarouselViewDelegate>)delegate
-{
-    if (self = [super initWithFrame:frame]) {
-        _delegate                      = delegate;
-        _imageURLs                     = imageURLs;
-        _imageCount                    = imageURLs.count;
-        _placeholderImageName          = placeholderImageName;
-        _timeInterval                  = timeInterval;
-        _currentPageIndicatorTintColor = currentPageIndicatorTintColor ?: [UIColor whiteColor];
-        _pageIndicatorTintColor        = pageIndicatorTintColor ?: [[UIColor whiteColor] colorWithAlphaComponent:0.5];
-        _pageControlBottomDistance     = 10.0f;
-        [self setupWithInternetImage];
-        [self startTimer];
-    }
-    return self;
-}
+#pragma mark - Setup UI
 
-- (void)setupWithLocalImage {
+- (void)setupContent {
     
-    CGFloat scrollW = self.frame.size.width;
-    CGFloat scrollH = self.frame.size.height;
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, scrollW, scrollH)];
+    if (_imageArray.count == 0) {
+        return;
+    }
+    
+    _currentIndex = 0;
+    
     [self addSubview:({
-        scrollView.delegate      = self;
-        scrollView.scrollsToTop  = NO;
-        scrollView.pagingEnabled = YES;
-        scrollView.contentOffset = CGPointMake(scrollW, 0);
-        scrollView.contentSize   = CGSizeMake((self.imageCount + 2) * scrollW, 0);
-        scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView = scrollView;
-    })];
-    
-    for (int i = 0; i < self.imageCount + 2; i++) {
-        NSInteger tag = 0;
-        if (i == 0) {
-            tag = self.imageCount;
-        } else if (i == self.imageCount + 1) {
-            tag = 1;
-        } else {
-            tag = i;
-        }
-        NSString *currentImageName = self.imageNames[tag - 1];
-        [scrollView addSubview:({
-            UIImageView *imageView = [[UIImageView alloc] init];
-            imageView.image = [UIImage imageNamed:currentImageName];
-            imageView.tag = tag;
-            imageView.clipsToBounds          = YES;
-            imageView.userInteractionEnabled = YES;
-            imageView.contentMode            = UIViewContentModeScaleAspectFill;
-            imageView.frame                  = CGRectMake(scrollW * i, 0, scrollW, scrollH);
-            UITapGestureRecognizer *tap      = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTaped:)];
-            [imageView addGestureRecognizer:tap];
-            imageView;
+        _scrollView = [[UIScrollView alloc] init];
+        _scrollView.pagingEnabled = YES;
+        _scrollView.bounces = NO;
+        _scrollView.showsHorizontalScrollIndicator = NO;
+        _scrollView.showsVerticalScrollIndicator = NO;
+        _scrollView.delegate = self;
+        
+        [_scrollView addSubview:({
+            _currentImageView = [[UIImageView alloc] init];
+            _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
+            _currentImageView.userInteractionEnabled = YES;
+            [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageAction)]];
+            _currentImageView;
         })];
-    }
-    
-    [self addSubview:({
-        UIPageControl *pageControl = [[UIPageControl alloc] init];
-        pageControl.center                        = CGPointMake(scrollW * 0.5, scrollH - _pageControlBottomDistance);
-        pageControl.numberOfPages                 = self.imageCount;
-        pageControl.userInteractionEnabled        = NO;
-        pageControl.currentPageIndicatorTintColor = self.currentPageIndicatorTintColor;
-        pageControl.pageIndicatorTintColor        = self.pageIndicatorTintColor;
-        [self addSubview:pageControl];
-        _pageControl = pageControl;
-    })];
-}
-
-- (void)setupWithInternetImage {
-    
-    CGFloat scrollW = self.frame.size.width;
-    CGFloat scrollH = self.frame.size.height;
-    UIScrollView *scrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, scrollW, scrollH)];
-    [self addSubview:({
-        scrollView.delegate      = self;
-        scrollView.scrollsToTop  = NO;
-        scrollView.pagingEnabled = YES;
-        scrollView.contentOffset = CGPointMake(scrollW, 0);
-        scrollView.contentSize   = CGSizeMake((self.imageCount + 2) * scrollW, 0);
-        scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView = scrollView;
-    })];
-    
-    for (int i = 0; i < self.imageCount + 2; i++) { // Create two more
-        NSInteger tag = 0;
-        if (i == 0) { //  When the currently displayed the first picture, the left is last picture
-            tag = self.imageCount;
-        } else if (i == self.imageCount + 1) { // When the currently displayed the last picture, the right is first picture
-            tag = 1;
-        } else {
-            tag = i;
-        }
-        NSString *currentImageURLString = self.imageURLs[tag - 1];
-        [scrollView addSubview:({
-            UIImageView *imageView = [[UIImageView alloc] init];
-            [imageView sd_setImageWithURL:[NSURL URLWithString:currentImageURLString]
-                         placeholderImage:[UIImage imageNamed:self.placeholderImageName]];
-            imageView.tag = tag;
-            imageView.clipsToBounds          = YES;
-            imageView.userInteractionEnabled = YES;
-            imageView.contentMode            = UIViewContentModeScaleAspectFill;
-            imageView.frame                  = CGRectMake(scrollW * i, 0, scrollW, scrollH);
-            UITapGestureRecognizer *tap      = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(imageViewTaped:)];
-            [imageView addGestureRecognizer:tap];
-             imageView;
+        
+        [_scrollView addSubview:({
+            _nextImageView = [[UIImageView alloc] init];
+            _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
+            _nextImageView;
         })];
-    }
+        
+        _scrollView;
+    })];
     
     [self addSubview:({
-        UIPageControl *pageControl = [[UIPageControl alloc] init];
-        pageControl.center = CGPointMake(scrollW * 0.5, scrollH - _pageControlBottomDistance);
-        pageControl.numberOfPages                 = self.imageCount;
-        pageControl.userInteractionEnabled        = NO;
-        pageControl.currentPageIndicatorTintColor = self.currentPageIndicatorTintColor;
-        pageControl.pageIndicatorTintColor        = self.pageIndicatorTintColor;
-        _pageControl = pageControl;
+        _pageControl = [[UIPageControl alloc] init];
+        _pageControl.hidesForSinglePage = YES;
+        _pageControl.userInteractionEnabled = NO;
+        _pageControl.numberOfPages = _imageArray.count;
+        _pageControl.currentPage = 0;
+        _pageControl;
     })];
+    
+    [self setupImages];
+    
+    [self setupImageDescribes];
 }
 
-- (void)imageViewTaped:(UITapGestureRecognizer *)tap {
+- (void)setupImages {
     
-    if ([self.delegate respondsToSelector:@selector(infiniteCarouselView:didClickImageAtIndex:)]) {
-        [self.delegate infiniteCarouselView:self didClickImageAtIndex:tap.view.tag - 1];
+    for (int i = 0; i < _imageArray.count; i++) {
+        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local image
+            [_images addObject:_imageArray[i]];
+        }
+        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet image
+            if (_placeholderImage) {
+                [_images addObject:_placeholderImage];
+            } else {
+                [_images addObject:[NSNull null]];
+            }
+            [self downloadImagesAtIndex:i];
+        }
     }
-}
-
-#pragma mark - Public method
-
-- (void)setPageControlBottomDistance:(CGFloat)pageControlBottomDistance {
     
-    _pageControlBottomDistance = pageControlBottomDistance;
-    
-    CGRect frame = self.pageControl.frame;
-    frame.origin.y = self.frame.size.height - 10.0f - pageControlBottomDistance;
-    self.pageControl.frame = frame;
-}
-
-- (void)setForbidScrolling:(BOOL)forbidScrolling {
-    
-    _forbidScrolling = forbidScrolling;
-    
-    if (forbidScrolling) {
-        self.scrollView.scrollEnabled = NO;
+    if ([_images[0] isKindOfClass:[NSNull class]]) {
+        _currentImageView.image = nil;
     } else {
-        self.scrollView.scrollEnabled = YES;
+        _currentImageView.image = _images[0];
     }
 }
 
-- (void)setCurrentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor {
+- (void)setupImageDescribes {
     
-    _currentPageIndicatorTintColor = currentPageIndicatorTintColor;
-    
-    self.pageControl.currentPageIndicatorTintColor = currentPageIndicatorTintColor ?: [UIColor whiteColor];
+    if (_describeArray && _describeArray.count > 0) {
+        if (_describeArray.count < _images.count) {
+            NSMutableArray *arrayM = [NSMutableArray arrayWithArray:_describeArray];
+            for (NSInteger i = _describeArray.count; i<_images.count; i++) {
+                [arrayM addObject:@""];
+            }
+            _describeArray = arrayM;
+        }
+        self.descLabel.hidden = NO;
+        self.descLabel.text = [_describeArray firstObject];
+    }
 }
 
-- (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor {
+- (void)layoutSubviews {
     
-    _pageIndicatorTintColor = pageIndicatorTintColor;
+    [super layoutSubviews];
     
-    self.pageControl.pageIndicatorTintColor = pageIndicatorTintColor ?: [UIColor grayColor];
+    _scrollView.frame = self.bounds;
+    _scrollView.contentInset = UIEdgeInsetsZero;
+    
+    if (_images.count > 1) {
+        _scrollView.contentSize   = CGSizeMake(self.width * 3, 0);
+        _scrollView.contentOffset = CGPointMake(self.width, 0);
+        _currentImageView.frame   = CGRectMake(self.width, 0, self.width, self.height);
+    } else {
+        _scrollView.contentSize   = CGSizeZero;
+        _scrollView.contentOffset = CGPointMake(0, 0);
+        _currentImageView.frame   = CGRectMake(0, 0, self.width, self.height);
+    }
+    
+    if (!_describeArray || _describeArray.count == 0) {
+        _pageControl.frame = CGRectMake(self.width * 0.5 - self.pageControl.numberOfPages * 15 * 0.5, self.height - 20, self.pageControl.numberOfPages * 15, 20);
+    } else {
+        _pageControl.frame = CGRectMake(self.width - self.pageControl.numberOfPages * 15, self.height - 20, self.pageControl.numberOfPages * 15, 20);
+        _descLabel.frame   = CGRectMake(0, self.height - 20, self.width, 20);
+        [self bringSubviewToFront:_pageControl];
+    }
+    
+    if (_images.count > 1) {
+        [self startTimer];
+    }
 }
 
 #pragma mark - Timer
 
 - (void)startTimer {
     
-    self.timer = [NSTimer scheduledTimerWithTimeInterval:self.timeInterval
-                                                  target:self
-                                                selector:@selector(nextImage) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:self.timer forMode:NSRunLoopCommonModes];
+    if (_images.count <= 1) {
+        return;
+    }
+    
+    if (_timer) {
+        [self stopTimer];
+    }
+    
+    _timer = [NSTimer timerWithTimeInterval:_timeInterval == 0 ? 5.0 : _timeInterval
+                                     target:self
+                                   selector:@selector(nextPage)
+                                   userInfo:nil
+                                    repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
 }
 
 - (void)stopTimer {
     
-    if (self.timer) {
-        [self.timer invalidate];
-        self.timer = nil;
-    }
+    [_timer invalidate];
+    _timer = nil;
 }
 
-- (void)nextImage {
+- (void)nextPage {
     
-    CGFloat scrollViewW = self.scrollView.frame.size.width;
-    [self.scrollView setContentOffset:CGPointMake(scrollViewW + scrollViewW * (self.pageControl.currentPage + 1), 0)
-                             animated:YES];
+    [_scrollView setContentOffset:CGPointMake(self.width * 2, 0) animated:YES];
+}
+
+#pragma mark - Download Images
+
+- (void)downloadImagesAtIndex:(int)index {
+    
+    NSString *cachekey = self.imageArray[index];
+    UIImage *image = self.imageDic[cachekey];
+    if (image) { // If memory already has image.
+        self.images[index] = image;
+        return;
+    }
+    
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:cacheFileName];
+    NSString *cachePath = [cacheDirectory stringByAppendingPathComponent:[cachekey lastPathComponent]];
+    NSData *data = [NSData dataWithContentsOfFile:cachePath];
+    if (data) { // If sandbox already has image.
+        image = [UIImage imageWithData:data];
+        self.images[index] = image;
+        self.imageDic[cachekey] = image;
+        return;
+    }
+    
+    // Download image.
+    NSBlockOperation *downloadOperation = self.operationDic[cachekey];
+    if (downloadOperation) { // If the operation of download this image already exists.
+        return;
+    }
+    downloadOperation = [NSBlockOperation blockOperationWithBlock:^{
+        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cachekey]];
+        if (!data) {
+            return;
+        }
+        UIImage *image = [UIImage imageWithData:data];
+        if (image) {
+            self.images[index] = image;
+            self.imageDic[cachekey] = image;
+            [data writeToFile:cachePath atomically:YES];
+            if (index == _currentIndex) {
+                [_currentImageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+            }
+        }
+        [self.operationDic removeObjectForKey:cachekey];
+    }];
+    self.operationDic[cachekey] = downloadOperation;
+    
+    [self.operationQueue addOperation:downloadOperation];
 }
 
 #pragma mark - UIScrollViewDelegate
 
-- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    [self scrollViewDidEndDecelerating:scrollView];
-}
-
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    CGFloat offsetX = scrollView.contentOffset.x;
     
-    CGFloat scrollViewW = scrollView.frame.size.width;
-    NSInteger currentPage = scrollView.contentOffset.x / scrollViewW;
-    if (currentPage == self.imageCount + 1) {
-        self.pageControl.currentPage = 0;
-        [scrollView setContentOffset:CGPointMake(scrollViewW, 0) animated:NO]; // Go start!
-    } else if (currentPage == 0) {
-        self.pageControl.currentPage = self.imageCount;
-        [scrollView setContentOffset:CGPointMake(self.imageCount * scrollViewW, 0) animated:NO]; // Go end!
+    if (offsetX == self.width) {
+        return;
+    }
+    
+    if (offsetX > self.width) {
+        _nextImageView.frame = CGRectMake(CGRectGetMaxX(_currentImageView.frame), 0, self.width, self.height);
+        _nextIndex = _currentIndex + 1;
+        if (_nextIndex == _images.count) {
+            _nextIndex = 0;
+        }
+    }
+    
+    if (offsetX < self.width) {
+        _nextImageView.frame = CGRectMake(0, 0, self.width, self.height);
+        _nextIndex = _currentIndex - 1;
+        if (_nextIndex < 0) {
+            _nextIndex = _images.count - 1;
+        }
+    }
+    
+    if ([_images[_nextIndex] isKindOfClass:[NSNull class]]) {
+        _nextImageView.image = nil;
     } else {
-        self.pageControl.currentPage = currentPage - 1;
+        _nextImageView.image = self.images[_nextIndex];
     }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
+    // Stop timer when dragging scrollview manually.
     [self stopTimer];
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     
+    // Start timer when stop dragging scrollview manually.
     [self startTimer];
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    
+    // Update content when paging finishes manually.
+    [self updateContent];
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
+    
+    // Update content when paging finishes automatically.
+    [self updateContent];
+}
+
+- (void)updateContent {
+    
+    if (_scrollView.contentOffset.x == self.width) {
+        // If paging not finished do not update content.
+        return;
+    }
+    
+    _currentIndex = _nextIndex;
+    
+    _pageControl.currentPage = _currentIndex;
+    
+    self.descLabel.text = self.describeArray[self.currentIndex];
+    
+    _currentImageView.image = _nextImageView.image;
+    _currentImageView.frame = CGRectMake(self.width, 0, self.width, self.height);
+    
+    [_scrollView setContentOffset:CGPointMake(self.width, 0) animated:NO];
+}
+
+#pragma mark - Other
+
++ (void)initialize {
+    
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:cacheFileName];
+    BOOL isDirectory = NO;
+    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
+    if (!isExists || !isDirectory) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
+
+- (CGFloat)height {
+    
+    return _scrollView.frame.size.height;
+}
+
+- (CGFloat)width {
+    
+    return _scrollView.frame.size.width;
+}
+
+- (void)tapImageAction {
+    
+    if ([self.delegate respondsToSelector:@selector(infiniteCarouselViewDidTapImageAtIndex:)]) {
+        [self.delegate infiniteCarouselViewDidTapImageAtIndex:self.currentIndex];
+    }
+}
+
+#pragma mark - Public Methods
+
+- (void)clearImagesCache {
+
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingString:cacheFileName];
+    NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cacheDirectory error:NULL];
+    for (NSString *fileName in fileNames) {
+        [[NSFileManager defaultManager] removeItemAtPath:[cacheDirectory stringByAppendingPathComponent:fileName] error:NULL];
+    }
+}
+
+- (void)setCurrentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor {
+    
+    if (_currentPageIndicatorTintColor != currentPageIndicatorTintColor) {
+        _currentPageIndicatorTintColor = currentPageIndicatorTintColor;
+        _pageControl.currentPageIndicatorTintColor = currentPageIndicatorTintColor;
+    }
+}
+
+- (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor {
+    
+    if (_pageIndicatorTintColor != pageIndicatorTintColor) {
+        _pageIndicatorTintColor = pageIndicatorTintColor;
+        _pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
+    }
+}
+
+- (void)setCurrentPageIndicatorImage:(UIImage *)currentPageIndicatorImage {
+
+    if (_currentPageIndicatorImage != currentPageIndicatorImage) {
+        _currentPageIndicatorImage = currentPageIndicatorImage;
+        [_pageControl setValue:currentPageIndicatorImage forKey:@"currentPageImage"];
+    }
+}
+
+- (void)setPageIndicatorImage:(UIImage *)pageIndicatorImage {
+    
+    if (_pageIndicatorImage != pageIndicatorImage) {
+        _pageIndicatorImage = pageIndicatorImage;
+        [_pageControl setValue:pageIndicatorImage forKey:@"pageImage"];
+    }
+}
+
+- (void)setTimeInterval:(NSTimeInterval)timeInterval {
+    
+    if (_timeInterval != timeInterval) {
+        _timeInterval = timeInterval;
+        [self startTimer];
+    }
 }
 
 @end
