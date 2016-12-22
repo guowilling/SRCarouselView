@@ -6,6 +6,17 @@
 //  Copyright © 2016年 SR. All rights reserved.
 //
 
+/**
+ *  If you have any question, please issue or contact me.
+ *  QQ: 1990991510
+ *  Email: guowilling@qq.com
+ *
+ *  If you like it, please star it, thanks a lot.
+ *  Github: https://github.com/guowilling/SRInfiniteCarouselView
+ *
+ *  Have Fun.
+ */
+
 #import <UIKit/UIKit.h>
 
 @protocol SRInfiniteCarouselViewDelegate <NSObject>
