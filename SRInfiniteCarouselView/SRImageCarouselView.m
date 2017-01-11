@@ -1,16 +1,17 @@
 //
-//  SRInfiniteCarouselView.m
+//  SRImageCarouselView.m
 //  SRInfiniteCarouselViewDemo
 //
-//  Created by 郭伟林 on 16/12/21.
-//  Copyright © 2016年 SR. All rights reserved.
+//  Created by 郭伟林 on 17/1/10.
+//  Copyright © 2017年 SR. All rights reserved.
 //
 
-#import "SRInfiniteCarouselView.h"
+#import "SRImageCarouselView.h"
+#import "SRImageManager.h"
 
 static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
-@interface SRInfiniteCarouselView () <UIScrollViewDelegate>
+@interface SRImageCarouselView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
@@ -34,11 +35,36 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 @property (nonatomic, strong) NSTimer *timer;
 
+@property (nonatomic, strong) SRImageManager *imageManager;
+
 @end
 
-@implementation SRInfiniteCarouselView
+@implementation SRImageCarouselView
+
+- (void)dealloc {
+    
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+}
 
 #pragma mark - Lazy Load
+
+- (SRImageManager *)imageManager {
+    
+    if (!_imageManager) {
+        __weak typeof(self) weakSelf = self;
+        _imageManager = [SRImageManager shareManager];
+        _imageManager.downloadImageSuccess = ^(UIImage *image, NSString *imageURLString, NSInteger imageIndex) {
+            weakSelf.images[imageIndex] = image;
+            if (weakSelf.currentIndex == imageIndex) {
+                [weakSelf.currentImageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+            }
+        };
+    }
+    return _imageManager;
+}
 
 - (UILabel *)descLabel {
     
@@ -56,22 +82,22 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 #pragma mark - Init Methods
 
-+ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary {
++ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary {
     
-    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:nil];
+    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:nil];
 }
 
-+ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
++ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
     
-    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
+    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
 }
 
-+ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
++ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
     
-    return [self sr_infiniteCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
+    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
 }
 
-+ (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate {
++ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate {
     
     return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
 }
@@ -91,7 +117,7 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
     return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
 }
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate {
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate {
     
     if (self = [super init]) {
         _imageArray       = imageArrary;
@@ -170,7 +196,7 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
             } else {
                 [_images addObject:[NSNull null]];
             }
-            [self downloadImagesAtIndex:i];
+            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i];
         }
     }
     
@@ -257,53 +283,6 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
     [_scrollView setContentOffset:CGPointMake(self.width * 2, 0) animated:YES];
 }
 
-#pragma mark - Download Images
-
-- (void)downloadImagesAtIndex:(int)index {
-    
-    NSString *cachekey = self.imageArray[index];
-    UIImage *image = self.imageDic[cachekey];
-    if (image) { // If memory already has image.
-        self.images[index] = image;
-        return;
-    }
-    
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:cacheFileName];
-    NSString *cachePath = [cacheDirectory stringByAppendingPathComponent:[cachekey lastPathComponent]];
-    NSData *data = [NSData dataWithContentsOfFile:cachePath];
-    if (data) { // If sandbox already has image.
-        image = [UIImage imageWithData:data];
-        self.images[index] = image;
-        self.imageDic[cachekey] = image;
-        return;
-    }
-    
-    // Download image.
-    NSBlockOperation *downloadOperation = self.operationDic[cachekey];
-    if (downloadOperation) { // If the operation of download this image already exists.
-        return;
-    }
-    downloadOperation = [NSBlockOperation blockOperationWithBlock:^{
-        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:cachekey]];
-        if (!data) {
-            return;
-        }
-        UIImage *image = [UIImage imageWithData:data];
-        if (image) {
-            self.images[index] = image;
-            self.imageDic[cachekey] = image;
-            [data writeToFile:cachePath atomically:YES];
-            if (index == _currentIndex) {
-                [_currentImageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
-            }
-        }
-        [self.operationDic removeObjectForKey:cachekey];
-    }];
-    self.operationDic[cachekey] = downloadOperation;
-    
-    [self.operationQueue addOperation:downloadOperation];
-}
-
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
@@ -382,9 +361,10 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 #pragma mark - Other
 
-+ (void)initialize {
++ (void)load {
     
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:cacheFileName];
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
+                                stringByAppendingPathComponent:cacheFileName];
     BOOL isDirectory = NO;
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
     if (!isExists || !isDirectory) {
@@ -404,16 +384,17 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 - (void)tapImageAction {
     
-    if ([self.delegate respondsToSelector:@selector(infiniteCarouselViewDidTapImageAtIndex:)]) {
-        [self.delegate infiniteCarouselViewDidTapImageAtIndex:self.currentIndex];
+    if ([self.delegate respondsToSelector:@selector(imageCarouselViewDidTapImageAtIndex:)]) {
+        [self.delegate imageCarouselViewDidTapImageAtIndex:self.currentIndex];
     }
 }
 
 #pragma mark - Public Methods
 
 - (void)clearImagesCache {
-
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingString:cacheFileName];
+    
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
+                                stringByAppendingString:cacheFileName];
     NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cacheDirectory error:NULL];
     for (NSString *fileName in fileNames) {
         [[NSFileManager defaultManager] removeItemAtPath:[cacheDirectory stringByAppendingPathComponent:fileName] error:NULL];
@@ -437,7 +418,7 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 }
 
 - (void)setCurrentPageIndicatorImage:(UIImage *)currentPageIndicatorImage {
-
+    
     if (_currentPageIndicatorImage != currentPageIndicatorImage) {
         _currentPageIndicatorImage = currentPageIndicatorImage;
         [_pageControl setValue:currentPageIndicatorImage forKey:@"currentPageImage"];

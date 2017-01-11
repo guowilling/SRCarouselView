@@ -1,15 +1,13 @@
 # SRInfiniteCarouselView
 
-### Creating infinite carousel view with local images or the urls of images.
-
 ## Features
 
 * Only use two UIImageView to achieve infinite carousel.
-* Do not rely on any third-party libraries, use the native API to download images and avoid duplication of downloads and other issues.
+* Do not rely on any third-party libraries, use the native API to download images.
 * Support for manually deleting cached carousel images in the sandbox
 * UIPageControl will be displayed on the right If there are descriptions of the contents of the images or displayed on the center.
 
-## Show pictures
+## Show Pictures
 
 ![image](./show.gif)
 ![image](./show.png)
@@ -17,46 +15,52 @@
 ## Usage
 
 ````objc
-{
-    // URLs of images
-    NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
-                            @"http://i1.piimg.com/4851/a47d409e267eb871.png",
-                            @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
-                            @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
+// Network Images
+NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
+                        @"http://i1.piimg.com/4851/a47d409e267eb871.png",
+                        @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
+                        @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
     
-    SRInfiniteCarouselView *infiniteCarouselView = [SRInfiniteCarouselView sr_infiniteCarouselViewWithImageArrary:imageArray
-                                                                                                    describeArray:nil
-                                                                                                 placeholderImage:[UIImage imageNamed:@"placeholder"]
-                                                                                                         delegate:self];
-    infiniteCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
-    [self.view addSubview:infiniteCarouselView];
-}
+SRImageCarouselView *imageCarouselView = [SRImageCarouselView sr_imageCarouselViewWithImageArrary:imageArray
+                                                                                    describeArray:nil
+                                                                                 placeholderImage:[UIImage imageNamed:@"placeholder"]
+                                                                                         delegate:self];
+imageCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
+[self.view addSubview:imageCarouselView];
+````
 
-{
-    // Local images.
-    NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
-                            [UIImage imageNamed:@"coldplay02"],
-                            [UIImage imageNamed:@"coldplay03"],
-                            [UIImage imageNamed:@"coldplay04"]];
-    NSMutableArray *describeArray = [[NSMutableArray alloc] init];
-    for (NSInteger i = 0; i < imageArray.count; i++) {
-        NSString *tempDesc = [NSString stringWithFormat:@"图片描述%zd", i];
-        [describeArray addObject:tempDesc];
-    }
+````objc
+// Local Images
+NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
+                        [UIImage imageNamed:@"coldplay02"],
+                        [UIImage imageNamed:@"coldplay03"],
+                        [UIImage imageNamed:@"coldplay04"]];
+NSMutableArray *describeArray = [[NSMutableArray alloc] init];
+for (NSInteger i = 0; i < imageArray.count; i++) {
+    NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i];
+    [describeArray addObject:tempDesc];
+}
     
-    SRInfiniteCarouselView *infiniteCarouselView = [SRInfiniteCarouselView sr_infiniteCarouselViewWithImageArrary:imageArray
-                                                                                                    describeArray:describeArray
-                                                                                                 placeholderImage:nil
-                                                                                                         delegate:self];
-    infiniteCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
-    infiniteCarouselView.timeInterval = 10.0;
-    [self.view addSubview:infiniteCarouselView];
-}
+SRImageCarouselView *imageCarouselView = [SRImageCarouselView sr_imageCarouselViewWithImageArrary:imageArray
+                                                                                    describeArray:describeArray
+                                                                                 placeholderImage:nil
+                                                                                         delegate:self];
+imageCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
+imageCarouselView.timeInterval = 10.0;
+[self.view addSubview:imageCarouselView];
+````
 
+````objc
+// Delegate Method
 - (void)infiniteCarouselViewDidTapImageAtIndex:(NSInteger)index {
     
     NSLog(@"%zd", index);
 }
+````
+
+````objc
+// Clear Images In Sandbox
+[[SRImageManager shareManager] clearCachedImages];
 ````
 
 ## Custom Settings
@@ -88,14 +92,12 @@
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
-## Public methods
+## Update
 
-````objc
-/**
- Clear the images cache in the sandbox.
- */
-- (void)clearImagesCache;
-````
+### 2017.01.10
+> Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
+> If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselView class is in 'Deprecated' folder.
+
 
 **If you have any question, please issue or contact me.**   
 **If this repo helps you, please give it a star.**  

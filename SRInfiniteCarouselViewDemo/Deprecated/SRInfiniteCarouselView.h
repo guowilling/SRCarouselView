@@ -66,7 +66,7 @@
  @param describeArray    The image describes are in the same order as the images.
  @param placeholderImage The placeholder image when internet images have not download.
  @param delegate         delegate
- @return                 a SRInfiniteCarouselView object
+ @return                 A SRInfiniteCarouselView object
  */
 + (instancetype)sr_infiniteCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate;
 

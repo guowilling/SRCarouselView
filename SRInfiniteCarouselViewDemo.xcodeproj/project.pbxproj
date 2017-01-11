@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		683779791E0A8280001C9EB8 /* SRInfiniteCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 683779781E0A8280001C9EB8 /* SRInfiniteCarouselView.m */; };
 		683779831E0AA047001C9EB8 /* coldplay01.png in Resources */ = {isa = PBXBuildFile; fileRef = 6837797F1E0AA047001C9EB8 /* coldplay01.png */; };
 		683779841E0AA047001C9EB8 /* coldplay02.png in Resources */ = {isa = PBXBuildFile; fileRef = 683779801E0AA047001C9EB8 /* coldplay02.png */; };
 		683779851E0AA047001C9EB8 /* coldplay03.png in Resources */ = {isa = PBXBuildFile; fileRef = 683779811E0AA047001C9EB8 /* coldplay03.png */; };
@@ -20,6 +19,8 @@
 		68E05AF01D7AC0C000F214D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AEE1D7AC0C000F214D5 /* LaunchScreen.storyboard */; };
 		68E05AFB1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AFA1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m */; };
 		68E05B061D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */; };
+		68E1AE491E24B07F00404611 /* SRImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE481E24B07F00404611 /* SRImageManager.m */; };
+		68E1AE881E24C53600404611 /* SRImageCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE871E24C53600404611 /* SRImageCarouselView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,8 +41,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		683779771E0A8280001C9EB8 /* SRInfiniteCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRInfiniteCarouselView.h; sourceTree = "<group>"; };
-		683779781E0A8280001C9EB8 /* SRInfiniteCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselView.m; sourceTree = "<group>"; };
 		6837797F1E0AA047001C9EB8 /* coldplay01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay01.png; sourceTree = "<group>"; };
 		683779801E0AA047001C9EB8 /* coldplay02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay02.png; sourceTree = "<group>"; };
 		683779811E0AA047001C9EB8 /* coldplay03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay03.png; sourceTree = "<group>"; };
@@ -62,6 +61,10 @@
 		68E05B011D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRInfiniteCarouselViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselViewDemoUITests.m; sourceTree = "<group>"; };
 		68E05B071D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		68E1AE471E24B07F00404611 /* SRImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRImageManager.h; sourceTree = "<group>"; };
+		68E1AE481E24B07F00404611 /* SRImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRImageManager.m; sourceTree = "<group>"; };
+		68E1AE861E24C53600404611 /* SRImageCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRImageCarouselView.h; sourceTree = "<group>"; };
+		68E1AE871E24C53600404611 /* SRImageCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRImageCarouselView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -167,8 +170,10 @@
 		68E05B131D7AC1F200F214D5 /* SRInfiniteCarouselView */ = {
 			isa = PBXGroup;
 			children = (
-				683779771E0A8280001C9EB8 /* SRInfiniteCarouselView.h */,
-				683779781E0A8280001C9EB8 /* SRInfiniteCarouselView.m */,
+				68E1AE471E24B07F00404611 /* SRImageManager.h */,
+				68E1AE481E24B07F00404611 /* SRImageManager.m */,
+				68E1AE861E24C53600404611 /* SRImageCarouselView.h */,
+				68E1AE871E24C53600404611 /* SRImageCarouselView.m */,
 			);
 			path = SRInfiniteCarouselView;
 			sourceTree = "<group>";
@@ -309,8 +314,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				683779791E0A8280001C9EB8 /* SRInfiniteCarouselView.m in Sources */,
+				68E1AE491E24B07F00404611 /* SRImageManager.m in Sources */,
 				68E05AE81D7AC0C000F214D5 /* ViewController.m in Sources */,
+				68E1AE881E24C53600404611 /* SRImageCarouselView.m in Sources */,
 				68E05AE51D7AC0BF00F214D5 /* AppDelegate.m in Sources */,
 				68E05AE21D7AC0BF00F214D5 /* main.m in Sources */,
 			);
@@ -455,6 +461,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Y4FK8UXDXW;
 				INFOPLIST_FILE = SRInfiniteCarouselViewDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -469,6 +476,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = Y4FK8UXDXW;
 				INFOPLIST_FILE = SRInfiniteCarouselViewDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
