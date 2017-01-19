@@ -4,7 +4,7 @@
 
 * Only use two UIImageView to achieve infinite carousel.
 * Do not rely on any third-party libraries, use the native API to download images.
-* Support for manually deleting cached carousel images in the sandbox
+* Support for manually deleting cached carousel images in the sandbox.
 * UIPageControl will be displayed on the right If there are descriptions of the contents of the images or displayed on the center.
 
 ## Show Pictures
@@ -97,7 +97,6 @@ imageCarouselView.timeInterval = 10.0;
 ### 2017.01.10
 > Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
 > If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselView class is in 'Deprecated' folder.
-
 
 **If you have any question, please issue or contact me.**   
 **If this repo helps you, please give it a star.**  
