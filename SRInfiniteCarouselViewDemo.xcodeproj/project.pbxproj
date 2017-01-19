@@ -11,6 +11,7 @@
 		683779841E0AA047001C9EB8 /* coldplay02.png in Resources */ = {isa = PBXBuildFile; fileRef = 683779801E0AA047001C9EB8 /* coldplay02.png */; };
 		683779851E0AA047001C9EB8 /* coldplay03.png in Resources */ = {isa = PBXBuildFile; fileRef = 683779811E0AA047001C9EB8 /* coldplay03.png */; };
 		683779861E0AA047001C9EB8 /* coldplay04.png in Resources */ = {isa = PBXBuildFile; fileRef = 683779821E0AA047001C9EB8 /* coldplay04.png */; };
+		68A849BC1E306A1D0088C16E /* placeholder_image.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 68A849BB1E306A1D0088C16E /* placeholder_image.jpg */; };
 		68E05AE21D7AC0BF00F214D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE11D7AC0BF00F214D5 /* main.m */; };
 		68E05AE51D7AC0BF00F214D5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE41D7AC0BF00F214D5 /* AppDelegate.m */; };
 		68E05AE81D7AC0C000F214D5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE71D7AC0BF00F214D5 /* ViewController.m */; };
@@ -20,7 +21,7 @@
 		68E05AFB1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AFA1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m */; };
 		68E05B061D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */; };
 		68E1AE491E24B07F00404611 /* SRImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE481E24B07F00404611 /* SRImageManager.m */; };
-		68E1AE881E24C53600404611 /* SRImageCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE871E24C53600404611 /* SRImageCarouselView.m */; };
+		68E1AE881E24C53600404611 /* SRInfiniteCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,6 +46,7 @@
 		683779801E0AA047001C9EB8 /* coldplay02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay02.png; sourceTree = "<group>"; };
 		683779811E0AA047001C9EB8 /* coldplay03.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay03.png; sourceTree = "<group>"; };
 		683779821E0AA047001C9EB8 /* coldplay04.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay04.png; sourceTree = "<group>"; };
+		68A849BB1E306A1D0088C16E /* placeholder_image.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = placeholder_image.jpg; sourceTree = "<group>"; };
 		68E05ADD1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SRInfiniteCarouselViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E05AE11D7AC0BF00F214D5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -63,8 +65,8 @@
 		68E05B071D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68E1AE471E24B07F00404611 /* SRImageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRImageManager.h; sourceTree = "<group>"; };
 		68E1AE481E24B07F00404611 /* SRImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRImageManager.m; sourceTree = "<group>"; };
-		68E1AE861E24C53600404611 /* SRImageCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRImageCarouselView.h; sourceTree = "<group>"; };
-		68E1AE871E24C53600404611 /* SRImageCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRImageCarouselView.m; sourceTree = "<group>"; };
+		68E1AE861E24C53600404611 /* SRInfiniteCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRInfiniteCarouselView.h; sourceTree = "<group>"; };
+		68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -137,6 +139,7 @@
 		68E05AE01D7AC0BF00F214D5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				68A849BB1E306A1D0088C16E /* placeholder_image.jpg */,
 				6837797E1E0AA047001C9EB8 /* LocalImages */,
 				68E05AE11D7AC0BF00F214D5 /* main.m */,
 				68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */,
@@ -172,8 +175,8 @@
 			children = (
 				68E1AE471E24B07F00404611 /* SRImageManager.h */,
 				68E1AE481E24B07F00404611 /* SRImageManager.m */,
-				68E1AE861E24C53600404611 /* SRImageCarouselView.h */,
-				68E1AE871E24C53600404611 /* SRImageCarouselView.m */,
+				68E1AE861E24C53600404611 /* SRInfiniteCarouselView.h */,
+				68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */,
 			);
 			path = SRInfiniteCarouselView;
 			sourceTree = "<group>";
@@ -284,6 +287,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				683779851E0AA047001C9EB8 /* coldplay03.png in Resources */,
+				68A849BC1E306A1D0088C16E /* placeholder_image.jpg in Resources */,
 				683779841E0AA047001C9EB8 /* coldplay02.png in Resources */,
 				68E05AF01D7AC0C000F214D5 /* LaunchScreen.storyboard in Resources */,
 				683779831E0AA047001C9EB8 /* coldplay01.png in Resources */,
@@ -316,7 +320,7 @@
 			files = (
 				68E1AE491E24B07F00404611 /* SRImageManager.m in Sources */,
 				68E05AE81D7AC0C000F214D5 /* ViewController.m in Sources */,
-				68E1AE881E24C53600404611 /* SRImageCarouselView.m in Sources */,
+				68E1AE881E24C53600404611 /* SRInfiniteCarouselView.m in Sources */,
 				68E05AE51D7AC0BF00F214D5 /* AppDelegate.m in Sources */,
 				68E05AE21D7AC0BF00F214D5 /* main.m in Sources */,
 			);

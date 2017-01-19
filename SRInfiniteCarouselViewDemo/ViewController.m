@@ -18,7 +18,7 @@
  */
 
 #import "ViewController.h"
-#import "SRImageCarouselView.h"
+#import "SRInfiniteCarouselView.h"
 #import "SRImageManager.h"
 
 @interface ViewController () <SRImageCarouselViewDelegate>
@@ -45,10 +45,10 @@
                                 @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
                                 @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
         
-        SRImageCarouselView *imageCarouselView = [SRImageCarouselView sr_imageCarouselViewWithImageArrary:imageArray
-                                                                                            describeArray:nil
-                                                                                         placeholderImage:[UIImage imageNamed:@"placeholder"]
-                                                                                                 delegate:self];
+        SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
+                                                                                             describeArray:nil
+                                                                                          placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"]
+                                                                                                  delegate:self];
         imageCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
         [self.view addSubview:imageCarouselView];
     }
@@ -65,10 +65,10 @@
             [describeArray addObject:tempDesc];
         }
         
-        SRImageCarouselView *imageCarouselView = [SRImageCarouselView sr_imageCarouselViewWithImageArrary:imageArray
-                                                                                            describeArray:describeArray
-                                                                                         placeholderImage:nil
-                                                                                                 delegate:self];
+        SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
+                                                                                             describeArray:describeArray
+                                                                                          placeholderImage:nil
+                                                                                                  delegate:self];
         imageCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
         imageCarouselView.timeInterval = 10.0;
         [self.view addSubview:imageCarouselView];

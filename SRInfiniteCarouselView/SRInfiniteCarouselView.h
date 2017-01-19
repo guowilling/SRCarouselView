@@ -15,7 +15,7 @@
 
 @end
 
-@interface SRImageCarouselView : UIView
+@interface SRInfiniteCarouselView : UIView
 
 /**
  The interval between automatic page turning, default is 5.0s.
@@ -53,10 +53,10 @@
  @param delegate         delegate
  @return                 A SRInfiniteCarousel object
  */
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
 
 - (instancetype)initWithImageArrary:(NSArray *)imageArrary;
 - (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;

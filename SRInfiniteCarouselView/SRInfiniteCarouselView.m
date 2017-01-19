@@ -6,12 +6,10 @@
 //  Copyright © 2017年 SR. All rights reserved.
 //
 
-#import "SRImageCarouselView.h"
+#import "SRInfiniteCarouselView.h"
 #import "SRImageManager.h"
 
-static NSString * const cacheFileName = @"SRInfiniteCarouselView";
-
-@interface SRImageCarouselView () <UIScrollViewDelegate>
+@interface SRInfiniteCarouselView () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
@@ -39,7 +37,7 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 @end
 
-@implementation SRImageCarouselView
+@implementation SRInfiniteCarouselView
 
 - (void)dealloc {
     
@@ -82,22 +80,22 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 #pragma mark - Init Methods
 
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary {
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary {
     
-    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:nil];
+    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:nil];
 }
 
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
     
-    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
+    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
 }
 
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
     
-    return [self sr_imageCarouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
+    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
 }
 
-+ (instancetype)sr_imageCarouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate {
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate {
     
     return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
 }
@@ -229,21 +227,24 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
     _scrollView.frame = self.bounds;
     _scrollView.contentInset = UIEdgeInsetsZero;
     
+    CGFloat width = _scrollView.frame.size.width;
+    CGFloat height = _scrollView.frame.size.height;
+
     if (_images.count > 1) {
-        _scrollView.contentSize   = CGSizeMake(self.width * 3, 0);
-        _scrollView.contentOffset = CGPointMake(self.width, 0);
-        _currentImageView.frame   = CGRectMake(self.width, 0, self.width, self.height);
+        _scrollView.contentSize   = CGSizeMake(width * 3, 0);
+        _scrollView.contentOffset = CGPointMake(width, 0);
+        _currentImageView.frame   = CGRectMake(width, 0, width, height);
     } else {
         _scrollView.contentSize   = CGSizeZero;
         _scrollView.contentOffset = CGPointMake(0, 0);
-        _currentImageView.frame   = CGRectMake(0, 0, self.width, self.height);
+        _currentImageView.frame   = CGRectMake(0, 0, width, height);
     }
     
     if (!_describeArray || _describeArray.count == 0) {
-        _pageControl.frame = CGRectMake(self.width * 0.5 - self.pageControl.numberOfPages * 15 * 0.5, self.height - 20, self.pageControl.numberOfPages * 15, 20);
+        _pageControl.frame = CGRectMake(width * 0.5 - _pageControl.numberOfPages * 15 * 0.5, height - 20, _pageControl.numberOfPages * 15, 20);
     } else {
-        _pageControl.frame = CGRectMake(self.width - self.pageControl.numberOfPages * 15, self.height - 20, self.pageControl.numberOfPages * 15, 20);
-        _descLabel.frame   = CGRectMake(0, self.height - 20, self.width, 20);
+        _pageControl.frame = CGRectMake(width - _pageControl.numberOfPages * 15, height - 20, _pageControl.numberOfPages * 15, 20);
+        _descLabel.frame   = CGRectMake(0, height - 20, width, 20);
         [self bringSubviewToFront:_pageControl];
     }
     
@@ -280,29 +281,33 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 - (void)nextPage {
     
-    [_scrollView setContentOffset:CGPointMake(self.width * 2, 0) animated:YES];
+    CGFloat width = _scrollView.frame.size.width;
+    [_scrollView setContentOffset:CGPointMake(width * 2, 0) animated:YES];
 }
 
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
+    CGFloat width = _scrollView.frame.size.width;
+    CGFloat height = _scrollView.frame.size.height;
+    
     CGFloat offsetX = scrollView.contentOffset.x;
     
-    if (offsetX == self.width) {
+    if (offsetX == width) {
         return;
     }
     
-    if (offsetX > self.width) {
-        _nextImageView.frame = CGRectMake(CGRectGetMaxX(_currentImageView.frame), 0, self.width, self.height);
+    if (offsetX > width) {
+        _nextImageView.frame = CGRectMake(CGRectGetMaxX(_currentImageView.frame), 0, width, height);
         _nextIndex = _currentIndex + 1;
         if (_nextIndex == _images.count) {
             _nextIndex = 0;
         }
     }
     
-    if (offsetX < self.width) {
-        _nextImageView.frame = CGRectMake(0, 0, self.width, self.height);
+    if (offsetX < width) {
+        _nextImageView.frame = CGRectMake(0, 0, width, height);
         _nextIndex = _currentIndex - 1;
         if (_nextIndex < 0) {
             _nextIndex = _images.count - 1;
@@ -342,7 +347,10 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 
 - (void)updateContent {
     
-    if (_scrollView.contentOffset.x == self.width) {
+    CGFloat width = _scrollView.frame.size.width;
+    CGFloat height = _scrollView.frame.size.height;
+    
+    if (_scrollView.contentOffset.x == width) {
         // If paging not finished do not update content.
         return;
     }
@@ -354,33 +362,12 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
     self.descLabel.text = self.describeArray[self.currentIndex];
     
     _currentImageView.image = _nextImageView.image;
-    _currentImageView.frame = CGRectMake(self.width, 0, self.width, self.height);
+    _currentImageView.frame = CGRectMake(width, 0, width, height);
     
-    [_scrollView setContentOffset:CGPointMake(self.width, 0) animated:NO];
+    [_scrollView setContentOffset:CGPointMake(width, 0) animated:NO];
 }
 
-#pragma mark - Other
-
-+ (void)load {
-    
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
-                                stringByAppendingPathComponent:cacheFileName];
-    BOOL isDirectory = NO;
-    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
-    if (!isExists || !isDirectory) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
-    }
-}
-
-- (CGFloat)height {
-    
-    return _scrollView.frame.size.height;
-}
-
-- (CGFloat)width {
-    
-    return _scrollView.frame.size.width;
-}
+#pragma mark - Actions
 
 - (void)tapImageAction {
     
@@ -390,16 +377,6 @@ static NSString * const cacheFileName = @"SRInfiniteCarouselView";
 }
 
 #pragma mark - Public Methods
-
-- (void)clearImagesCache {
-    
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
-                                stringByAppendingString:cacheFileName];
-    NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:cacheDirectory error:NULL];
-    for (NSString *fileName in fileNames) {
-        [[NSFileManager defaultManager] removeItemAtPath:[cacheDirectory stringByAppendingPathComponent:fileName] error:NULL];
-    }
-}
 
 - (void)setCurrentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor {
     

@@ -14,11 +14,22 @@
 
 @property (nonatomic, copy) NSString *cacheDirectoryPath;
 
-@property (nonatomic, strong) NSMutableDictionary *reDownloadImageDic;
+@property (nonatomic, strong) NSMutableDictionary *redownloadManager;
 
 @end
 
 @implementation SRImageManager
+
++ (void)load {
+    
+    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
+                                stringByAppendingPathComponent:NSStringFromClass([self class])];
+    BOOL isDirectory = NO;
+    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
+    if (!isExists || !isDirectory) {
+        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+    }
+}
 
 - (NSString *)cacheDirectoryPath {
     
@@ -29,12 +40,12 @@
     return _cacheDirectoryPath;
 }
 
-- (NSMutableDictionary *)reDownloadImageDic {
+- (NSMutableDictionary *)redownloadManager {
     
-    if (!_reDownloadImageDic) {
-        _reDownloadImageDic = [NSMutableDictionary dictionary];
+    if (!_redownloadManager) {
+        _redownloadManager = [NSMutableDictionary dictionary];
     }
-    return _reDownloadImageDic;
+    return _redownloadManager;
 }
 
 + (instancetype)shareManager {
@@ -53,17 +64,6 @@
         _repeatCountWhenDownloadFailure = 2;
     }
     return self;
-}
-
-+ (void)load {
-    
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
-                                stringByAppendingPathComponent:NSStringFromClass([self class])];
-    BOOL isDirectory = NO;
-    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
-    if (!isExists || !isDirectory) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
-    }
 }
 
 - (BOOL)canLoadFromCacheWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index {
@@ -91,36 +91,37 @@
         return;
     }
     
-    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString] completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            if (error) {
-                [self reDownloadWithImageURLString:URLString imageIndex:index error:error];
-                return ;
-            }
-            
-            UIImage *image = [UIImage imageWithData:data];
-            if (!image) {
-                return;
-            }
-            
-            BOOL flag = [data writeToFile:[self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)] atomically:YES];
-            if (!flag) {
-                NSLog(@"cache image error.");
-            }
-            
-            if (self.downloadImageSuccess) {
-                self.downloadImageSuccess(image, URLString, index);
-            }
-        });
-    }] resume];
+    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString]
+                                 completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
+                                     dispatch_async(dispatch_get_main_queue(), ^{
+                                         if (error) {
+                                             [self redownloadWithImageURLString:URLString imageIndex:index error:error];
+                                             return ;
+                                         }
+                                         
+                                         UIImage *image = [UIImage imageWithData:data];
+                                         if (!image) {
+                                             return;
+                                         }
+                                         
+                                         if (self.downloadImageSuccess) {
+                                             self.downloadImageSuccess(image, URLString, index);
+                                         }
+                                         
+                                         BOOL flag = [data writeToFile:[self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)] atomically:YES];
+                                         if (!flag) {
+                                             NSLog(@"cache image error.");
+                                         }
+                                     });
+                                 }] resume];
 }
 
-- (void)reDownloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index error:(NSError *)error {
+- (void)redownloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index error:(NSError *)error {
     
-    NSNumber *number = [self.reDownloadImageDic objectForKey:URLString];
+    NSNumber *number = [self.redownloadManager objectForKey:URLString];
     NSInteger count = number ? number.integerValue : 0;
     if (self.repeatCountWhenDownloadFailure > count ) {
-        [self.reDownloadImageDic setObject:@(++count) forKey:URLString];
+        [self.redownloadManager setObject:@(++count) forKey:URLString];
         [self downloadWithImageURLString:URLString imageIndex:index];
     } else {
         if (self.downloadImageFailure) {
