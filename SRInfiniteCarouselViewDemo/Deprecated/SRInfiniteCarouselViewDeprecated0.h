@@ -26,7 +26,7 @@
 
 @end
 
-@interface SRInfiniteCarouselView : UIView
+@interface SRInfiniteCarouselViewDeprecated0 : UIView
 
 /**
  The interval between automatic page turning, default is 5.0s.

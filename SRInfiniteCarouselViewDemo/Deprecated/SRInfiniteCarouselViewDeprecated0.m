@@ -6,11 +6,11 @@
 //  Copyright © 2016年 SR. All rights reserved.
 //
 
-#import "SRInfiniteCarouselView.h"
+#import "SRInfiniteCarouselViewDeprecated0.h"
 
 static NSString * const cacheDirectoryName = @"SRInfiniteCarouselView";
 
-@interface SRInfiniteCarouselView () <UIScrollViewDelegate>
+@interface SRInfiniteCarouselViewDeprecated0 () <UIScrollViewDelegate>
 
 @property (nonatomic, strong) NSOperationQueue *operationQueue;
 
@@ -36,7 +36,7 @@ static NSString * const cacheDirectoryName = @"SRInfiniteCarouselView";
 
 @end
 
-@implementation SRInfiniteCarouselView
+@implementation SRInfiniteCarouselViewDeprecated0
 
 - (void)dealloc {
     
