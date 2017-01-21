@@ -3,9 +3,16 @@
 ## Features
 
 * Only use two UIImageView to achieve infinite carousel.
-* Do not rely on any third-party libraries, use the native API to download images.
+* Do not rely on any third-party libraries, use the native API to download and cache images.
 * Support for manually deleting cached carousel images in the sandbox.
 * UIPageControl will be displayed on the right If there are descriptions of the contents of the images or displayed on the center.
+
+***
+
+* 只使用了两个 UIImageView 实现无线轮播.
+* 使用原生 API 下载和缓存图片.
+* 支持手动删除缓存在沙盒中的图片.
+* 如果图片设置了描述, UIPageControl 会显示在底部的右边, 否则会显示在底部中间.
 
 ## Show Pictures
 
@@ -96,7 +103,7 @@ imageCarouselView.timeInterval = 10.0;
 
 ### 2017.01.10
 > Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
-> If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselView class is in 'Deprecated' folder.
+> If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
 
 **If you have any question, please issue or contact me.**   
 **If this repo helps you, please give it a star.**  
