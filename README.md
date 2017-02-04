@@ -17,6 +17,7 @@
 ## Show Pictures
 
 ![image](./show.gif)
+
 ![image](./show.png)
 
 ## Usage
@@ -73,29 +74,19 @@ imageCarouselView.timeInterval = 10.0;
 ## Custom Settings
 
 ````objc
-/**
- The time interval of auto Paging, Default is 5.0s.
- */
+/** The time interval of auto Paging, Default is 5.0s. */
 @property (nonatomic, assign) NSTimeInterval timeInterval;
 
-/**
- Current page indicator tint color.
- */
+/** Current page indicator tint color. */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
-/**
- Other page indicator tint color.
- */
+/** Other page indicator tint color. */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
-/**
- Current page indicator image.
- */
+/** Current page indicator image. */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
-/**
- Other page indicator image.
- */
+/** Other page indicator image. */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
