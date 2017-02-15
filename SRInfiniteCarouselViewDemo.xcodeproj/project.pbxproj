@@ -197,9 +197,9 @@
 		68E05AE01D7AC0BF00F214D5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				68A849BB1E306A1D0088C16E /* placeholder_image.jpg */,
 				68E1AD6D1E30AB630034363B /* Deprecated */,
 				6837797E1E0AA047001C9EB8 /* LocalImages */,
+				68A849BB1E306A1D0088C16E /* placeholder_image.jpg */,
 				68E05AE11D7AC0BF00F214D5 /* main.m */,
 				68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */,
 				68E05AE41D7AC0BF00F214D5 /* AppDelegate.m */,
