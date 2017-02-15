@@ -17,8 +17,15 @@
 ## Show Pictures
 
 ![image](./show.gif)
-
 ![image](./show.png)
+
+## Installation
+
+### CocoaPods
+> Add **pod 'SRInfiniteCarouselView'** to the Podfile, then run **pod install** in the terminal.
+
+### Manual
+> Drag the **SRInfiniteCarouselView** folder to the project.
 
 ## Usage
 
@@ -64,9 +71,7 @@ imageCarouselView.timeInterval = 10.0;
     
     NSLog(@"%zd", index);
 }
-````
 
-````objc
 // Clear Images In Sandbox
 [[SRImageManager shareManager] clearCachedImages];
 ````
@@ -74,28 +79,41 @@ imageCarouselView.timeInterval = 10.0;
 ## Custom Settings
 
 ````objc
-/** The time interval of auto Paging, Default is 5.0s. */
+/** 
+ The time interval of auto Paging, Default is 5.0s. 
+ */
 @property (nonatomic, assign) NSTimeInterval timeInterval;
 
-/** Current page indicator tint color. */
+/** 
+ Current page indicator tint color. 
+ */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
-/** Other page indicator tint color. */
+/** 
+ Other page indicator tint color. 
+ */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
-/** Current page indicator image. */
+/** 
+ Current page indicator image. 
+ */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
-/** Other page indicator image. */
+/** 
+ Other page indicator image.
+ */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
 ## Update
 
+### 2017.02.15
+> Support CocoaPods.
+
 ### 2017.01.10
 > Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
 > If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
 
-**If you have any question, please issue or contact me.**   
+**If you have any question, submit an issue or contact me.**   
 **If this repo helps you, please give it a star.**  
 **Have Fun.**
