@@ -232,10 +232,10 @@
 		68E05B131D7AC1F200F214D5 /* SRInfiniteCarouselView */ = {
 			isa = PBXGroup;
 			children = (
-				68E1AE471E24B07F00404611 /* SRImageManager.h */,
-				68E1AE481E24B07F00404611 /* SRImageManager.m */,
 				68E1AE861E24C53600404611 /* SRInfiniteCarouselView.h */,
 				68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */,
+				68E1AE471E24B07F00404611 /* SRImageManager.h */,
+				68E1AE481E24B07F00404611 /* SRImageManager.m */,
 			);
 			path = SRInfiniteCarouselView;
 			sourceTree = "<group>";
