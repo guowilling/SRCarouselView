@@ -28,7 +28,7 @@
                                                                              action:@selector(clearCachedImages)];
     
     {
-        // URLs of images
+        // Network images
         NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                                 @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                                 @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
@@ -41,7 +41,7 @@
         imageCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
         [self.view addSubview:imageCarouselView];
     }
-    
+
     {
         // Local images.
         NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
@@ -59,6 +59,21 @@
                                                                                           placeholderImage:nil
                                                                                                   delegate:self];
         imageCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
+        imageCarouselView.timeInterval = 10.0;
+        [self.view addSubview:imageCarouselView];
+    }
+    
+    {
+        // Mixed images
+        NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
+                                @"http://i1.piimg.com/4851/a47d409e267eb871.png",
+                                [UIImage imageNamed:@"coldplay03"],
+                                @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
+        SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
+                                                                                             describeArray:nil
+                                                                                          placeholderImage:nil
+                                                                                                  delegate:self];
+        imageCarouselView.frame = CGRectMake(0, 464, self.view.frame.size.width, 200);
         imageCarouselView.timeInterval = 10.0;
         [self.view addSubview:imageCarouselView];
     }

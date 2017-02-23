@@ -4,18 +4,7 @@
 //
 //  Created by 郭伟林 on 16/12/21.
 //  Copyright © 2016年 SR. All rights reserved.
-//
-
-/**
- *  If you have any question, please issue or contact me.
- *  QQ: 1990991510
- *  Email: guowilling@qq.com
- *
- *  If you like it, please star it, thanks a lot.
- *  Github: https://github.com/guowilling/SRInfiniteCarouselView
- *
- *  Have Fun.
- */
+//  使用 2 个 UIImageView 实现的无线轮播图.
 
 #import <UIKit/UIKit.h>
 

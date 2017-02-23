@@ -7,7 +7,6 @@
 //
 
 #import "SRInfiniteCarouselViewDeprecated2.h"
-#import "SDWebImageDownloader.h"
 
 @interface SRInfiniteCarouselViewDeprecated2 () <UIScrollViewDelegate>
 
@@ -180,14 +179,14 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
     
     NSMutableArray *imagesM = [NSMutableArray arrayWithCapacity:_imageURLStrings.count];
     
-    // Download first image
+    // Download first image.
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^{
         UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[_imageURLStrings firstObject]]]];
         if (image) {
             [imagesM addObject:image];
         }
         
-        // Show first image
+        // Show first image.
         dispatch_sync(dispatch_get_main_queue(), ^{
             self.currentImageView.image = image;
             CGFloat imageViewW = self.scrollView.bounds.size.width;
@@ -197,7 +196,7 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
             self.pageControl.center = CGPointMake(self.bounds.size.width / 2.0, self.bounds.size.height - 10);
         });
         
-        // Download other image
+        // Download other image.
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
             for (NSInteger i = 1; i < _imageURLStrings.count; i++) {
                 UIImage *image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:_imageURLStrings[i]]]];
@@ -205,7 +204,6 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
                     [imagesM addObject:image];
                 }
             }
-            
             dispatch_sync(dispatch_get_main_queue(), ^{
                 self.images = imagesM;
                 [self setupWithImages];
@@ -246,14 +244,12 @@ currentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor
     if (self.images.count <= 1) {
         return;
     }
-    
     CGFloat scrollViewW = self.scrollView.bounds.size.width;
     
     if (self.scrollView.contentOffset.x > scrollViewW) {
         self.leftImageView.tag    = self.currentImageView.tag;
         self.currentImageView.tag = self.rightImageView.tag;
         self.rightImageView.tag   = (self.rightImageView.tag + 1) % self.images.count;
-        
     } else if (self.scrollView.contentOffset.x < scrollViewW) {
         self.rightImageView.tag   = self.currentImageView.tag;
         self.currentImageView.tag = self.leftImageView.tag;

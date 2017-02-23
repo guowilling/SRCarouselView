@@ -11,15 +11,12 @@
 
 @interface SRInfiniteCarouselView () <UIScrollViewDelegate>
 
-@property (nonatomic, strong) NSOperationQueue *operationQueue;
+@property (nonatomic, strong) SRImageManager *imageManager;
+@property (nonatomic, strong) NSMutableArray *images;
 
 @property (nonatomic, strong) NSArray *imageArray;
 @property (nonatomic, strong) NSArray *describeArray;
 @property (nonatomic, strong) UIImage *placeholderImage;
-
-@property (nonatomic, strong) NSMutableArray      *images;
-@property (nonatomic, strong) NSMutableDictionary *imageDic;
-@property (nonatomic, strong) NSMutableDictionary *operationDic;
 
 @property (nonatomic, strong) UIScrollView  *scrollView;
 @property (nonatomic, strong) UIPageControl *pageControl;
@@ -33,11 +30,11 @@
 
 @property (nonatomic, strong) NSTimer *timer;
 
-@property (nonatomic, strong) SRImageManager *imageManager;
-
 @end
 
 @implementation SRInfiniteCarouselView
+
+#pragma mark - Overriding
 
 - (void)dealloc {
     
@@ -54,11 +51,16 @@
     if (!_imageManager) {
         __weak typeof(self) weakSelf = self;
         _imageManager = [SRImageManager shareManager];
-        _imageManager.downloadImageSuccess = ^(UIImage *image, NSString *imageURLString, NSInteger imageIndex) {
+        _imageManager.downloadImageSuccess = ^(UIImage *image, NSInteger imageIndex) {
             weakSelf.images[imageIndex] = image;
             if (weakSelf.currentIndex == imageIndex) {
-                [weakSelf.currentImageView performSelectorOnMainThread:@selector(setImage:) withObject:image waitUntilDone:NO];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    weakSelf.currentImageView.image = image;
+                });
             }
+        };
+        _imageManager.downloadImageFailure = ^(NSError *error, NSString *imageURLString) {
+            NSLog(@"Image: %@ download error: %@", imageURLString, error);
         };
     }
     return _imageManager;
@@ -123,100 +125,99 @@
         _delegate         = delegate;
         _placeholderImage = placeholderImage;
         
-        _operationQueue = [[NSOperationQueue alloc] init];
-        _images         = [NSMutableArray array];
-        _imageDic       = [NSMutableDictionary dictionary];
-        _operationDic   = [NSMutableDictionary dictionary];
+        _images       = [NSMutableArray array];
+        _currentIndex = 0;
+        _nextIndex    = 0;
         
-        [self setupContent];
+        [self setupSubViews];
+        [self startTimer];
     }
     return self;
 }
 
 #pragma mark - Setup UI
 
-- (void)setupContent {
+- (void)setupSubViews {
     
     if (_imageArray.count == 0) {
         return;
     }
     
-    _currentIndex = 0;
-    
-    [self addSubview:({
-        _scrollView = [[UIScrollView alloc] init];
-        _scrollView.pagingEnabled = YES;
-        _scrollView.bounces = NO;
-        _scrollView.showsHorizontalScrollIndicator = NO;
-        _scrollView.showsVerticalScrollIndicator = NO;
-        _scrollView.delegate = self;
-        
-        [_scrollView addSubview:({
-            _currentImageView = [[UIImageView alloc] init];
-            _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
-            _currentImageView.userInteractionEnabled = YES;
-            [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImageAction)]];
-            _currentImageView;
-        })];
-        
-        [_scrollView addSubview:({
-            _nextImageView = [[UIImageView alloc] init];
-            _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
-            _nextImageView;
-        })];
-        
-        _scrollView;
-    })];
-    
-    [self addSubview:({
-        _pageControl = [[UIPageControl alloc] init];
-        _pageControl.hidesForSinglePage = YES;
-        _pageControl.userInteractionEnabled = NO;
-        _pageControl.numberOfPages = _imageArray.count;
-        _pageControl.currentPage = 0;
-        _pageControl;
-    })];
+    [self setupScrollView];
+    [self setupPageControl];
     
     [self setupImages];
-    
     [self setupImageDescribes];
+}
+
+- (void)setupScrollView {
+    
+    _scrollView = [[UIScrollView alloc] init];
+    _scrollView.pagingEnabled = YES;
+    _scrollView.bounces = NO;
+    _scrollView.showsHorizontalScrollIndicator = NO;
+    _scrollView.showsVerticalScrollIndicator = NO;
+    _scrollView.delegate = self;
+    [self addSubview:_scrollView];
+    
+    _currentImageView = [[UIImageView alloc] init];
+    _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _currentImageView.userInteractionEnabled = YES;
+    [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCurrentImageView)]];
+    [_scrollView addSubview:_currentImageView];
+    
+    _nextImageView = [[UIImageView alloc] init];
+    _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
+    [_scrollView addSubview:_nextImageView];
+}
+
+- (void)setupPageControl {
+    
+    _pageControl = [[UIPageControl alloc] init];
+    _pageControl.hidesForSinglePage = YES;
+    _pageControl.userInteractionEnabled = NO;
+    _pageControl.numberOfPages = _imageArray.count;
+    _pageControl.currentPage = 0;
+    [self addSubview:_pageControl];
 }
 
 - (void)setupImages {
     
     for (int i = 0; i < _imageArray.count; i++) {
         if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local images.
-            [_images addObject:_imageArray[i]];
+            [self.images addObject:_imageArray[i]];
         }
         if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet images.
-            if (_placeholderImage) {
-                [_images addObject:_placeholderImage];
+            if (_placeholderImage) { // Hold placeholder image if setted or use NSNull object replace if not.
+                [self.images addObject:_placeholderImage];
             } else {
-                [_images addObject:[NSNull null]];
+                [self.images addObject:[NSNull null]];
             }
-            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i];
+            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i]; // Use SRImageManager to download image.
         }
     }
     
-    if ([_images[0] isKindOfClass:[NSNull class]]) {
+    // Show first image or placeholder image if exist.
+    if ([self.images[0] isKindOfClass:[NSNull class]]) {
         _currentImageView.image = nil;
     } else {
-        _currentImageView.image = _images[0];
+        _currentImageView.image = self.images[0];
     }
 }
 
 - (void)setupImageDescribes {
     
     if (_describeArray && _describeArray.count > 0) {
-        if (_describeArray.count < _images.count) {
+        if (_describeArray.count < self.images.count) {
             NSMutableArray *arrayM = [NSMutableArray arrayWithArray:_describeArray];
-            for (NSInteger i = _describeArray.count; i<_images.count; i++) {
+            for (NSInteger i = _describeArray.count; i< self.images.count; i++) {
                 [arrayM addObject:@""];
             }
             _describeArray = arrayM;
         }
         self.descLabel.hidden = NO;
-        self.descLabel.text = [_describeArray firstObject];
+        self.descLabel.text = _describeArray[0];
+        [self bringSubviewToFront:_pageControl];
     }
 }
 
@@ -230,7 +231,7 @@
     CGFloat width = _scrollView.frame.size.width;
     CGFloat height = _scrollView.frame.size.height;
 
-    if (_images.count > 1) {
+    if (self.images.count > 1) {
         _scrollView.contentSize   = CGSizeMake(width * 3, 0);
         _scrollView.contentOffset = CGPointMake(width, 0);
         _currentImageView.frame   = CGRectMake(width, 0, width, height);
@@ -240,16 +241,16 @@
         _currentImageView.frame   = CGRectMake(0, 0, width, height);
     }
     
+    CGFloat pageControlDotWidth = 15;
+    CGFloat pageControlHeight = 20;
+    CGFloat descLabelHeight = pageControlHeight;
     if (!_describeArray || _describeArray.count == 0) {
-        _pageControl.frame = CGRectMake(width * 0.5 - _pageControl.numberOfPages * 15 * 0.5, height - 20, _pageControl.numberOfPages * 15, 20);
+        _pageControl.frame = CGRectMake(width * 0.5 - _pageControl.numberOfPages * pageControlDotWidth * 0.5, height - pageControlHeight,
+                                        _pageControl.numberOfPages * pageControlDotWidth, pageControlHeight);
     } else {
-        _pageControl.frame = CGRectMake(width - _pageControl.numberOfPages * 15, height - 20, _pageControl.numberOfPages * 15, 20);
-        _descLabel.frame   = CGRectMake(0, height - 20, width, 20);
-        [self bringSubviewToFront:_pageControl];
-    }
-    
-    if (_images.count > 1) {
-        [self startTimer];
+        _pageControl.frame = CGRectMake(width - _pageControl.numberOfPages * pageControlDotWidth, height - pageControlHeight,
+                                        _pageControl.numberOfPages * pageControlDotWidth, pageControlHeight);
+        _descLabel.frame = CGRectMake(0, height - descLabelHeight, width, descLabelHeight);
     }
 }
 
@@ -257,7 +258,7 @@
 
 - (void)startTimer {
     
-    if (_images.count <= 1) {
+    if (self.images.count <= 1) {
         return;
     }
     
@@ -275,9 +276,13 @@
 
 - (void)stopTimer {
     
-    [_timer invalidate];
-    _timer = nil;
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
 }
+
+#pragma mark - Actions
 
 - (void)nextPage {
     
@@ -285,23 +290,29 @@
     [_scrollView setContentOffset:CGPointMake(width * 2, 0) animated:YES];
 }
 
+- (void)didTapCurrentImageView {
+    
+    if ([self.delegate respondsToSelector:@selector(imageCarouselViewDidTapImageAtIndex:)]) {
+        [self.delegate imageCarouselViewDidTapImageAtIndex:self.currentIndex];
+    }
+}
+
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
     
-    CGFloat width = _scrollView.frame.size.width;
-    CGFloat height = _scrollView.frame.size.height;
-    
     CGFloat offsetX = scrollView.contentOffset.x;
-    
+    CGFloat width = _scrollView.frame.size.width;
     if (offsetX == width) {
         return;
     }
     
+    CGFloat height = _scrollView.frame.size.height;
+    
     if (offsetX > width) {
         _nextImageView.frame = CGRectMake(CGRectGetMaxX(_currentImageView.frame), 0, width, height);
         _nextIndex = _currentIndex + 1;
-        if (_nextIndex == _images.count) {
+        if (_nextIndex == self.images.count) {
             _nextIndex = 0;
         }
     }
@@ -310,11 +321,11 @@
         _nextImageView.frame = CGRectMake(0, 0, width, height);
         _nextIndex = _currentIndex - 1;
         if (_nextIndex < 0) {
-            _nextIndex = _images.count - 1;
+            _nextIndex = self.images.count - 1;
         }
     }
     
-    if ([_images[_nextIndex] isKindOfClass:[NSNull class]]) {
+    if ([self.images[_nextIndex] isKindOfClass:[NSNull class]]) {
         _nextImageView.image = nil;
     } else {
         _nextImageView.image = self.images[_nextIndex];
@@ -323,37 +334,32 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
-    // Stop timer when dragging scrollview manually.
-    [self stopTimer];
+    [self stopTimer]; // Stop timer when dragging scrollview manually.
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     
-    // Start timer when stop dragging scrollview manually.
-    [self startTimer];
+    [self startTimer]; // Start timer when stop dragging scrollview manually.
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    // Update content when paging finishes manually.
-    [self updateContent];
+    [self updateContent]; // Update content when paging finishes manually.
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     
-    // Update content when paging finishes automatically.
-    [self updateContent];
+    [self updateContent]; // Update content when paging finishes automatically.
 }
 
 - (void)updateContent {
     
     CGFloat width = _scrollView.frame.size.width;
-    CGFloat height = _scrollView.frame.size.height;
-    
     if (_scrollView.contentOffset.x == width) {
-        // If paging not finished do not update content.
-        return;
+        return; // If paging not finished do not update content.
     }
+    
+    CGFloat height = _scrollView.frame.size.height;
     
     _currentIndex = _nextIndex;
     
@@ -365,15 +371,6 @@
     _currentImageView.frame = CGRectMake(width, 0, width, height);
     
     [_scrollView setContentOffset:CGPointMake(width, 0) animated:NO];
-}
-
-#pragma mark - Actions
-
-- (void)tapImageAction {
-    
-    if ([self.delegate respondsToSelector:@selector(imageCarouselViewDidTapImageAtIndex:)]) {
-        [self.delegate imageCarouselViewDidTapImageAtIndex:self.currentIndex];
-    }
 }
 
 #pragma mark - Public Methods

@@ -6,7 +6,6 @@
 //  Copyright © 2016年 SR. All rights reserved.
 //  使用 n + 2 个 UIImageView 实现的无线轮播图.
 
-
 #import <UIKit/UIKit.h>
 
 @class SRInfiniteCarouselViewDeprecated1;

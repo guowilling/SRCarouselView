@@ -13,9 +13,8 @@
 
 @property (nonatomic, assign) NSUInteger repeatCountWhenDownloadFailure;
 
+@property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSInteger imageIndex);
 @property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
-
-@property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSString *imageURLString, NSInteger imageIndex);
 
 + (instancetype)shareManager;
 

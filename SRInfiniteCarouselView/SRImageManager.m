@@ -66,28 +66,26 @@
     return self;
 }
 
-- (BOOL)canLoadFromCacheWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index {
+- (UIImage *)imageFromCacheWithImageURLString:(NSString *)URLString {
     
     NSString *cacheImagePath = [self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)];
     NSData *data = [NSData dataWithContentsOfFile:cacheImagePath];
     if (data.length > 0 ) {
         UIImage *image = [UIImage imageWithData:data];
-        if (image) {
-            if (self.downloadImageSuccess) {
-                self.downloadImageSuccess(image, URLString, index);
-            }
-            return YES;
-        } else {
-            [[NSFileManager defaultManager] removeItemAtPath:cacheImagePath error:NULL];
-        }
+        return image;
+    } else {
+        [[NSFileManager defaultManager] removeItemAtPath:cacheImagePath error:NULL];
     }
-    return NO;
+    return nil;
 }
 
 - (void)downloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index {
     
-    BOOL flag = [self canLoadFromCacheWithImageURLString:URLString imageIndex:index];
-    if (flag) {
+    UIImage *cacheImage = [self imageFromCacheWithImageURLString:URLString];
+    if (cacheImage) {
+        if (self.downloadImageSuccess) {
+            self.downloadImageSuccess(cacheImage, index);
+        }
         return;
     }
     
@@ -96,7 +94,7 @@
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          if (error) {
                                              [self redownloadWithImageURLString:URLString imageIndex:index error:error];
-                                             return ;
+                                             return;
                                          }
                                          
                                          UIImage *image = [UIImage imageWithData:data];
@@ -105,12 +103,12 @@
                                          }
                                          
                                          if (self.downloadImageSuccess) {
-                                             self.downloadImageSuccess(image, URLString, index);
+                                             self.downloadImageSuccess(image, index);
                                          }
                                          
                                          BOOL flag = [data writeToFile:[self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)] atomically:YES];
                                          if (!flag) {
-                                             NSLog(@"cache image error.");
+                                             NSLog(@"Cache image data failed!");
                                          }
                                      });
                                  }] resume];
@@ -118,15 +116,15 @@
 
 - (void)redownloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index error:(NSError *)error {
     
-    NSNumber *number = [self.redownloadManager objectForKey:URLString];
-    NSInteger count = number ? number.integerValue : 0;
-    if (self.repeatCountWhenDownloadFailure > count ) {
-        [self.redownloadManager setObject:@(++count) forKey:URLString];
+    NSNumber *redownloadNumber = self.redownloadManager[URLString];
+    NSInteger redownloadTimes = redownloadNumber ? redownloadNumber.integerValue : 0;
+    if (self.repeatCountWhenDownloadFailure > redownloadTimes ) {
+        self.redownloadManager[URLString] = @(++redownloadTimes);
         [self downloadWithImageURLString:URLString imageIndex:index];
-    } else {
-        if (self.downloadImageFailure) {
-            self.downloadImageFailure(error, URLString);
-        }
+        return;
+    }
+    if (self.downloadImageFailure) {
+        self.downloadImageFailure(error, URLString);
     }
 }
 
@@ -136,7 +134,7 @@
     for (NSString *fileName in fileNames) {
         BOOL flag = [[NSFileManager defaultManager] removeItemAtPath:[self.cacheDirectoryPath stringByAppendingPathComponent:fileName] error:NULL];
         if (!flag) {
-            NSLog(@"delete image error.");
+            NSLog(@"Delete image data failed!");
         }
     }
 }

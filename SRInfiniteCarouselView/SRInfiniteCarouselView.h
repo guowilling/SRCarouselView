@@ -29,40 +29,40 @@
 @interface SRInfiniteCarouselView : UIView
 
 /**
- The interval between automatic page turning, default is 5.0s.
+ Interval between automatic page turning, default is 5.0s.
  */
 @property (nonatomic, assign) NSTimeInterval timeInterval;
 
 /**
- The tint color of current page indicator.
+ Tint color of current page indicator.
  */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
 /**
- The tint color of other page indicator.
+ Tint color of other page indicator.
  */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
 /**
- The image of current page indicator.
+ Image of current page indicator.
  */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
 /**
- The image of other page indicator.
+ Image of other page indicator.
  */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
 @property (nonatomic, weak) id<SRImageCarouselViewDelegate> delegate;
 
 /**
- Create a SRInfiniteCarousel object with imageArrary, describeArray and delegate.
+ Create a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
  
- @param imageArrary      The local images or the urls of images.
- @param describeArray    The image describes are in the same order as the images.
- @param placeholderImage The placeholder image when internet images have not download.
- @param delegate         delegate
- @return                 A SRInfiniteCarousel object
+ @param imageArrary      Local images or the urls of images.
+ @param describeArray    Image describes are in the same order as the images.
+ @param placeholderImage Placeholder image when internet images have not download.
+ @param delegate         Delegate
+ @return                 A SRInfiniteCarouselView object
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;

@@ -14,7 +14,7 @@
 * 支持手动删除缓存在沙盒中的图片.
 * 如果图片设置了描述, UIPageControl 会显示在底部的右边, 否则会显示在底部中间.
 
-## Show Pictures
+## Show
 
 ![image](./show.gif)
 
@@ -104,7 +104,7 @@ imageCarouselView.timeInterval = 10.0;
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
-## Update
+## Significant updates
 
 ### 2017.02.15
 > Support CocoaPods.
