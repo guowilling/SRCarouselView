@@ -65,14 +65,23 @@ imageCarouselView.timeInterval = 10.0;
 ````
 
 ````objc
-// Delegate Method
-- (void)infiniteCarouselViewDidTapImageAtIndex:(NSInteger)index {
-    
-    NSLog(@"%zd", index);
-}
+// Mixed images
+NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
+                        @"http://i1.piimg.com/4851/a47d409e267eb871.png",
+                        [UIImage imageNamed:@"coldplay03"],
+                        [UIImage imageNamed:@"coldplay04"]];
+SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
+                                                                                     describeArray:nil
+                                                                                  placeholderImage:nil
+                                                                                          delegate:self];
+imageCarouselView.frame = CGRectMake(0, 464, self.view.frame.size.width, 200);
+imageCarouselView.timeInterval = 10.0;
+[self.view addSubview:imageCarouselView];
+````
 
-// Clear Images In Sandbox
-[[SRImageManager shareManager] clearCachedImages];
+````objc
+// Clear cached images in sandbox
+[[SRImageManager clearCachedImages];
 ````
 
 ## Custom Settings

@@ -16,10 +16,8 @@
 @property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSInteger imageIndex);
 @property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
 
-+ (instancetype)shareManager;
-
 - (void)downloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index;
 
-- (void)clearCachedImages;
++ (void)clearCachedImages;
 
 @end

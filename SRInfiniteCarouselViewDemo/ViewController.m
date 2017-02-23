@@ -24,7 +24,7 @@
     
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"CLEAR"
                                                                               style:UIBarButtonItemStyleDone
-                                                                             target:[SRImageManager shareManager]
+                                                                             target:[SRImageManager class]
                                                                              action:@selector(clearCachedImages)];
     
     {
@@ -65,10 +65,10 @@
     
     {
         // Mixed images
-        NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
+        NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                                 @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                                 [UIImage imageNamed:@"coldplay03"],
-                                @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
+                                [UIImage imageNamed:@"coldplay04"]];
         SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
                                                                                              describeArray:nil
                                                                                           placeholderImage:nil

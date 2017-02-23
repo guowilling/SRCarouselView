@@ -8,11 +8,14 @@
 
 #import "SRImageManager.h"
 
+#define SRCacheDirectoryPath [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] \
+                               stringByAppendingPathComponent:NSStringFromClass([self class])]
+
 #define SRCacheFileName(URLString) [URLString lastPathComponent]
 
-@interface SRImageManager ()
+#define SRCacheFilePath(URLString) [SRCacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)]
 
-@property (nonatomic, copy) NSString *cacheDirectoryPath;
+@interface SRImageManager ()
 
 @property (nonatomic, strong) NSMutableDictionary *redownloadManager;
 
@@ -22,22 +25,12 @@
 
 + (void)load {
     
-    NSString *cacheDirectory = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
-                                stringByAppendingPathComponent:NSStringFromClass([self class])];
+    NSString *cacheDirectory = SRCacheDirectoryPath;
     BOOL isDirectory = NO;
     BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
     if (!isExists || !isDirectory) {
         [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
     }
-}
-
-- (NSString *)cacheDirectoryPath {
-    
-    if (!_cacheDirectoryPath) {
-        _cacheDirectoryPath = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject]
-                               stringByAppendingPathComponent:NSStringFromClass([self class])];
-    }
-    return _cacheDirectoryPath;
 }
 
 - (NSMutableDictionary *)redownloadManager {
@@ -46,16 +39,6 @@
         _redownloadManager = [NSMutableDictionary dictionary];
     }
     return _redownloadManager;
-}
-
-+ (instancetype)shareManager {
-    
-    static SRImageManager *instance;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        instance = [[SRImageManager alloc] init];
-    });
-    return instance;
 }
 
 - (instancetype)init {
@@ -68,7 +51,7 @@
 
 - (UIImage *)imageFromCacheWithImageURLString:(NSString *)URLString {
     
-    NSString *cacheImagePath = [self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)];
+    NSString *cacheImagePath = SRCacheFilePath(URLString);
     NSData *data = [NSData dataWithContentsOfFile:cacheImagePath];
     if (data.length > 0 ) {
         UIImage *image = [UIImage imageWithData:data];
@@ -106,7 +89,7 @@
                                              self.downloadImageSuccess(image, index);
                                          }
                                          
-                                         BOOL flag = [data writeToFile:[self.cacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)] atomically:YES];
+                                         BOOL flag = [data writeToFile:SRCacheFilePath(URLString) atomically:YES];
                                          if (!flag) {
                                              NSLog(@"Cache image data failed!");
                                          }
@@ -128,11 +111,11 @@
     }
 }
 
-- (void)clearCachedImages {
++ (void)clearCachedImages {
 
-    NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:self.cacheDirectoryPath error:NULL];
+    NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:SRCacheDirectoryPath error:NULL];
     for (NSString *fileName in fileNames) {
-        BOOL flag = [[NSFileManager defaultManager] removeItemAtPath:[self.cacheDirectoryPath stringByAppendingPathComponent:fileName] error:NULL];
+        BOOL flag = [[NSFileManager defaultManager] removeItemAtPath:[SRCacheDirectoryPath stringByAppendingPathComponent:fileName] error:NULL];
         if (!flag) {
             NSLog(@"Delete image data failed!");
         }

@@ -50,13 +50,11 @@
     
     if (!_imageManager) {
         __weak typeof(self) weakSelf = self;
-        _imageManager = [SRImageManager shareManager];
+        _imageManager = [[SRImageManager alloc] init];
         _imageManager.downloadImageSuccess = ^(UIImage *image, NSInteger imageIndex) {
             weakSelf.images[imageIndex] = image;
             if (weakSelf.currentIndex == imageIndex) {
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    weakSelf.currentImageView.image = image;
-                });
+                weakSelf.currentImageView.image = image;
             }
         };
         _imageManager.downloadImageFailure = ^(NSError *error, NSString *imageURLString) {
