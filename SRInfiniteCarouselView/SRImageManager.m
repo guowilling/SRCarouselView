@@ -1,6 +1,5 @@
 //
 //  SRImageManager.m
-//  SRInfiniteCarouselViewDemo
 //
 //  Created by 郭伟林 on 17/1/10.
 //  Copyright © 2017年 SR. All rights reserved.
@@ -8,12 +7,12 @@
 
 #import "SRImageManager.h"
 
-#define SRCacheDirectoryPath [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] \
-                               stringByAppendingPathComponent:NSStringFromClass([self class])]
+#define SRImagesDirectory      [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] \
+                                 stringByAppendingPathComponent:NSStringFromClass([self class])]
 
-#define SRCacheFileName(URLString) [URLString lastPathComponent]
+#define SRImageName(URLString) [URLString lastPathComponent]
 
-#define SRCacheFilePath(URLString) [SRCacheDirectoryPath stringByAppendingPathComponent:SRCacheFileName(URLString)]
+#define SRImagePath(URLString) [SRImagesDirectory stringByAppendingPathComponent:SRImageName(URLString)]
 
 @interface SRImageManager ()
 
@@ -25,11 +24,12 @@
 
 + (void)load {
     
-    NSString *cacheDirectory = SRCacheDirectoryPath;
+    NSString *imagesDirectory = SRImagesDirectory;
     BOOL isDirectory = NO;
-    BOOL isExists = [[NSFileManager defaultManager] fileExistsAtPath:cacheDirectory isDirectory:&isDirectory];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    BOOL isExists = [fileManager fileExistsAtPath:imagesDirectory isDirectory:&isDirectory];
     if (!isExists || !isDirectory) {
-        [[NSFileManager defaultManager] createDirectoryAtPath:cacheDirectory withIntermediateDirectories:YES attributes:nil error:nil];
+        [fileManager createDirectoryAtPath:imagesDirectory withIntermediateDirectories:YES attributes:nil error:nil];
     }
 }
 
@@ -49,25 +49,24 @@
     return self;
 }
 
-- (UIImage *)imageFromCacheWithImageURLString:(NSString *)URLString {
+- (UIImage *)imageFromSandboxWithImageURLString:(NSString *)URLString {
     
-    NSString *cacheImagePath = SRCacheFilePath(URLString);
-    NSData *data = [NSData dataWithContentsOfFile:cacheImagePath];
+    NSString *imagePath = SRImagePath(URLString);
+    NSData *data = [NSData dataWithContentsOfFile:imagePath];
     if (data.length > 0 ) {
-        UIImage *image = [UIImage imageWithData:data];
-        return image;
+        return [UIImage imageWithData:data];
     } else {
-        [[NSFileManager defaultManager] removeItemAtPath:cacheImagePath error:NULL];
+        [[NSFileManager defaultManager] removeItemAtPath:imagePath error:NULL];
     }
     return nil;
 }
 
 - (void)downloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index {
     
-    UIImage *cacheImage = [self imageFromCacheWithImageURLString:URLString];
-    if (cacheImage) {
+    UIImage *image = [self imageFromSandboxWithImageURLString:URLString];
+    if (image) {
         if (self.downloadImageSuccess) {
-            self.downloadImageSuccess(cacheImage, index);
+            self.downloadImageSuccess(image, index);
         }
         return;
     }
@@ -89,9 +88,9 @@
                                              self.downloadImageSuccess(image, index);
                                          }
                                          
-                                         BOOL flag = [data writeToFile:SRCacheFilePath(URLString) atomically:YES];
+                                         BOOL flag = [data writeToFile:SRImagePath(URLString) atomically:YES];
                                          if (!flag) {
-                                             NSLog(@"Cache image data failed!");
+                                             NSLog(@"writeToFile Failed!");
                                          }
                                      });
                                  }] resume];
@@ -113,11 +112,12 @@
 
 + (void)clearCachedImages {
 
-    NSArray *fileNames = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:SRCacheDirectoryPath error:NULL];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSArray *fileNames = [fileManager contentsOfDirectoryAtPath:SRImagesDirectory error:nil];
     for (NSString *fileName in fileNames) {
-        BOOL flag = [[NSFileManager defaultManager] removeItemAtPath:[SRCacheDirectoryPath stringByAppendingPathComponent:fileName] error:NULL];
+        BOOL flag = [fileManager removeItemAtPath:[SRImagesDirectory stringByAppendingPathComponent:fileName] error:nil];
         if (!flag) {
-            NSLog(@"Delete image data failed!");
+            NSLog(@"removeItemAtPath Failed!");
         }
     }
 }

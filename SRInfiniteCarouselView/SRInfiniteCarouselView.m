@@ -1,6 +1,5 @@
 //
-//  SRImageCarouselView.m
-//  SRInfiniteCarouselViewDemo
+//  SRInfiniteCarouselView.m
 //
 //  Created by 郭伟林 on 17/1/10.
 //  Copyright © 2017年 SR. All rights reserved.
@@ -19,11 +18,10 @@
 @property (nonatomic, strong) UIImage *placeholderImage;
 
 @property (nonatomic, strong) UIScrollView  *scrollView;
+@property (nonatomic, strong) UIImageView   *currentImageView;
+@property (nonatomic, strong) UIImageView   *nextImageView;
 @property (nonatomic, strong) UIPageControl *pageControl;
 @property (nonatomic, strong) UILabel       *descLabel;
-
-@property (nonatomic, strong) UIImageView *currentImageView;
-@property (nonatomic, strong) UIImageView *nextImageView;
 
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, assign) NSInteger nextIndex;
