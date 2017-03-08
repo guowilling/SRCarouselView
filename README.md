@@ -16,7 +16,7 @@
 
 ## Show
 
-![image](./show.gif)
+![image](show.png)
 
 ## Installation
 
@@ -123,5 +123,5 @@ imageCarouselView.timeInterval = 10.0;
 > If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
 
 **If you have any question, submit an issue or contact me.**   
-**If this repo helps you, please give it a star.**  
+**If this repo helped you, please give it a star.**  
 **Have Fun.**
