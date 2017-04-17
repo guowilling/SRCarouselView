@@ -113,7 +113,7 @@ imageCarouselView.timeInterval = 10.0;
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
-## Significant updates
+## Significant Updates
 
 ### 2017.02.15
 > Support CocoaPods.
@@ -121,7 +121,3 @@ imageCarouselView.timeInterval = 10.0;
 ### 2017.01.10
 > Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
 > If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
-
-**If you have any question, submit an issue or contact me.**   
-**If this repo helped you, please give it a star.**  
-**Have Fun.**
