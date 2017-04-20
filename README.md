@@ -121,3 +121,13 @@ imageCarouselView.timeInterval = 10.0;
 ### 2017.01.10
 > Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
 > If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
+
+## More
+
+**If you have any questions, submit an issue or contact me.** 
+ 
+> [guowilling](https://github.com/guowilling)  
+> QQ: 1990991510  
+> Email: guowilling90@gmail.com
+
+**Have Fun.**

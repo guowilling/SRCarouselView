@@ -81,7 +81,7 @@
 
 - (void)imageCarouselViewDidTapImageAtIndex:(NSInteger)index {
     
-    NSLog(@"%zd", index);
+    NSLog(@"imageCarouselViewDidTapImageAtIndex: %zd", index);
 }
 
 @end

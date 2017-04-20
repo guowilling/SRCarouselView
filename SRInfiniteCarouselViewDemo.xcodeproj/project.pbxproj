@@ -18,8 +18,6 @@
 		68E05AEB1D7AC0C000F214D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AE91D7AC0C000F214D5 /* Main.storyboard */; };
 		68E05AED1D7AC0C000F214D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AEC1D7AC0C000F214D5 /* Assets.xcassets */; };
 		68E05AF01D7AC0C000F214D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AEE1D7AC0C000F214D5 /* LaunchScreen.storyboard */; };
-		68E05AFB1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AFA1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m */; };
-		68E05B061D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */; };
 		68E1AD961E30AB630034363B /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD701E30AB630034363B /* MKAnnotationView+WebCache.m */; };
 		68E1AD971E30AB630034363B /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD721E30AB630034363B /* NSData+ImageContentType.m */; };
 		68E1AD981E30AB630034363B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD741E30AB630034363B /* SDImageCache.m */; };
@@ -43,23 +41,6 @@
 		68E1AE881E24C53600404611 /* SRInfiniteCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		68E05AF71D7AC0C000F214D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68E05AD51D7AC0BF00F214D5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 68E05ADC1D7AC0BF00F214D5;
-			remoteInfo = SRInfiniteCarouselViewDemo;
-		};
-		68E05B021D7AC0C000F214D5 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 68E05AD51D7AC0BF00F214D5 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 68E05ADC1D7AC0BF00F214D5;
-			remoteInfo = SRInfiniteCarouselViewDemo;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		6837797F1E0AA047001C9EB8 /* coldplay01.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay01.png; sourceTree = "<group>"; };
 		683779801E0AA047001C9EB8 /* coldplay02.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = coldplay02.png; sourceTree = "<group>"; };
@@ -76,12 +57,6 @@
 		68E05AEC1D7AC0C000F214D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		68E05AEF1D7AC0C000F214D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68E05AF11D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		68E05AF61D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRInfiniteCarouselViewDemoTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		68E05AFA1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselViewDemoTests.m; sourceTree = "<group>"; };
-		68E05AFC1D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		68E05B011D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SRInfiniteCarouselViewDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselViewDemoUITests.m; sourceTree = "<group>"; };
-		68E05B071D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68E1AD6F1E30AB630034363B /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		68E1AD701E30AB630034363B /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		68E1AD711E30AB630034363B /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -135,20 +110,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		68E05AF31D7AC0C000F214D5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		68E05AFE1D7AC0C000F214D5 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -168,8 +129,6 @@
 			children = (
 				68E05B131D7AC1F200F214D5 /* SRInfiniteCarouselView */,
 				68E05ADF1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo */,
-				68E05AF91D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests */,
-				68E05B041D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests */,
 				68E05ADE1D7AC0BF00F214D5 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -178,8 +137,6 @@
 			isa = PBXGroup;
 			children = (
 				68E05ADD1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo.app */,
-				68E05AF61D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.xctest */,
-				68E05B011D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -209,24 +166,6 @@
 				68E05AF11D7AC0C000F214D5 /* Info.plist */,
 			);
 			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		68E05AF91D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests */ = {
-			isa = PBXGroup;
-			children = (
-				68E05AFA1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m */,
-				68E05AFC1D7AC0C000F214D5 /* Info.plist */,
-			);
-			path = SRInfiniteCarouselViewDemoTests;
-			sourceTree = "<group>";
-		};
-		68E05B041D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests */ = {
-			isa = PBXGroup;
-			children = (
-				68E05B051D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m */,
-				68E05B071D7AC0C000F214D5 /* Info.plist */,
-			);
-			path = SRInfiniteCarouselViewDemoUITests;
 			sourceTree = "<group>";
 		};
 		68E05B131D7AC1F200F214D5 /* SRInfiniteCarouselView */ = {
@@ -314,42 +253,6 @@
 			productReference = 68E05ADD1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo.app */;
 			productType = "com.apple.product-type.application";
 		};
-		68E05AF51D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 68E05B0D1D7AC0C000F214D5 /* Build configuration list for PBXNativeTarget "SRInfiniteCarouselViewDemoTests" */;
-			buildPhases = (
-				68E05AF21D7AC0C000F214D5 /* Sources */,
-				68E05AF31D7AC0C000F214D5 /* Frameworks */,
-				68E05AF41D7AC0C000F214D5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				68E05AF81D7AC0C000F214D5 /* PBXTargetDependency */,
-			);
-			name = SRInfiniteCarouselViewDemoTests;
-			productName = SRInfiniteCarouselViewDemoTests;
-			productReference = 68E05AF61D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		68E05B001D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 68E05B101D7AC0C000F214D5 /* Build configuration list for PBXNativeTarget "SRInfiniteCarouselViewDemoUITests" */;
-			buildPhases = (
-				68E05AFD1D7AC0C000F214D5 /* Sources */,
-				68E05AFE1D7AC0C000F214D5 /* Frameworks */,
-				68E05AFF1D7AC0C000F214D5 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				68E05B031D7AC0C000F214D5 /* PBXTargetDependency */,
-			);
-			name = SRInfiniteCarouselViewDemoUITests;
-			productName = SRInfiniteCarouselViewDemoUITests;
-			productReference = 68E05B011D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -363,14 +266,6 @@
 						CreatedOnToolsVersion = 7.3;
 						DevelopmentTeam = Y4FK8UXDXW;
 						ProvisioningStyle = Manual;
-					};
-					68E05AF51D7AC0C000F214D5 = {
-						CreatedOnToolsVersion = 7.3;
-						TestTargetID = 68E05ADC1D7AC0BF00F214D5;
-					};
-					68E05B001D7AC0C000F214D5 = {
-						CreatedOnToolsVersion = 7.3;
-						TestTargetID = 68E05ADC1D7AC0BF00F214D5;
 					};
 				};
 			};
@@ -388,8 +283,6 @@
 			projectRoot = "";
 			targets = (
 				68E05ADC1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo */,
-				68E05AF51D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests */,
-				68E05B001D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -407,20 +300,6 @@
 				68E05AED1D7AC0C000F214D5 /* Assets.xcassets in Resources */,
 				683779861E0AA047001C9EB8 /* coldplay04.png in Resources */,
 				68E05AEB1D7AC0C000F214D5 /* Main.storyboard in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		68E05AF41D7AC0C000F214D5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		68E05AFF1D7AC0C000F214D5 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -458,36 +337,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		68E05AF21D7AC0C000F214D5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				68E05AFB1D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoTests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		68E05AFD1D7AC0C000F214D5 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				68E05B061D7AC0C000F214D5 /* SRInfiniteCarouselViewDemoUITests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		68E05AF81D7AC0C000F214D5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 68E05ADC1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo */;
-			targetProxy = 68E05AF71D7AC0C000F214D5 /* PBXContainerItemProxy */;
-		};
-		68E05B031D7AC0C000F214D5 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 68E05ADC1D7AC0BF00F214D5 /* SRInfiniteCarouselViewDemo */;
-			targetProxy = 68E05B021D7AC0C000F214D5 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		68E05AE91D7AC0C000F214D5 /* Main.storyboard */ = {
@@ -621,52 +471,6 @@
 			};
 			name = Release;
 		};
-		68E05B0E1D7AC0C000F214D5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SRInfiniteCarouselViewDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRInfiniteCarouselViewDemo.app/SRInfiniteCarouselViewDemo";
-			};
-			name = Debug;
-		};
-		68E05B0F1D7AC0C000F214D5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				INFOPLIST_FILE = SRInfiniteCarouselViewDemoTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemoTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SRInfiniteCarouselViewDemo.app/SRInfiniteCarouselViewDemo";
-			};
-			name = Release;
-		};
-		68E05B111D7AC0C000F214D5 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = SRInfiniteCarouselViewDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = SRInfiniteCarouselViewDemo;
-			};
-			name = Debug;
-		};
-		68E05B121D7AC0C000F214D5 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				INFOPLIST_FILE = SRInfiniteCarouselViewDemoUITests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRInfiniteCarouselViewDemoUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_TARGET_NAME = SRInfiniteCarouselViewDemo;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -684,24 +488,6 @@
 			buildConfigurations = (
 				68E05B0B1D7AC0C000F214D5 /* Debug */,
 				68E05B0C1D7AC0C000F214D5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		68E05B0D1D7AC0C000F214D5 /* Build configuration list for PBXNativeTarget "SRInfiniteCarouselViewDemoTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				68E05B0E1D7AC0C000F214D5 /* Debug */,
-				68E05B0F1D7AC0C000F214D5 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		68E05B101D7AC0C000F214D5 /* Build configuration list for PBXNativeTarget "SRInfiniteCarouselViewDemoUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				68E05B111D7AC0C000F214D5 /* Debug */,
-				68E05B121D7AC0C000F214D5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

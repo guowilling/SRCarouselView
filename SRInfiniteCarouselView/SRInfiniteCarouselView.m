@@ -193,8 +193,7 @@
         }
     }
     
-    // Show first image or placeholder image if exist.
-    if ([self.images[0] isKindOfClass:[NSNull class]]) {
+    if ([self.images[0] isKindOfClass:[NSNull class]]) { // Show first image or placeholder image if exist.
         _currentImageView.image = nil;
     } else {
         _currentImageView.image = self.images[0];
@@ -354,15 +353,12 @@
     if (_scrollView.contentOffset.x == width) {
         return; // If paging not finished do not update content.
     }
-    
     CGFloat height = _scrollView.frame.size.height;
     
     _currentIndex = _nextIndex;
-    
     _pageControl.currentPage = _currentIndex;
     
     self.descLabel.text = self.describeArray[self.currentIndex];
-    
     _currentImageView.image = _nextImageView.image;
     _currentImageView.frame = CGRectMake(width, 0, width, height);
     

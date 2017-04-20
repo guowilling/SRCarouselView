@@ -5,15 +5,6 @@
 //  Copyright © 2017年 SR. All rights reserved.
 //
 
-/**
- *  If you have any question, submit an issue or contact me.
- *  QQ: 1990991510
- *  Email: guowilling@qq.com
- *  If this repo helped you, please give it a star.
- *  Github: https://github.com/guowilling/SRInfiniteCarouselView
- *  Have Fun.
- */
-
 #import <UIKit/UIKit.h>
 
 @protocol SRImageCarouselViewDelegate <NSObject>

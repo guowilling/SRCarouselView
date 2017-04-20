@@ -88,8 +88,7 @@
                                              self.downloadImageSuccess(image, index);
                                          }
                                          
-                                         BOOL flag = [data writeToFile:SRImagePath(URLString) atomically:YES];
-                                         if (!flag) {
+                                         if (![data writeToFile:SRImagePath(URLString) atomically:YES]) {
                                              NSLog(@"writeToFile Failed!");
                                          }
                                      });
@@ -115,8 +114,7 @@
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *fileNames = [fileManager contentsOfDirectoryAtPath:SRImagesDirectory error:nil];
     for (NSString *fileName in fileNames) {
-        BOOL flag = [fileManager removeItemAtPath:[SRImagesDirectory stringByAppendingPathComponent:fileName] error:nil];
-        if (!flag) {
+        if (![fileManager removeItemAtPath:[SRImagesDirectory stringByAppendingPathComponent:fileName] error:nil]) {
             NSLog(@"removeItemAtPath Failed!");
         }
     }
