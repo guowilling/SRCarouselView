@@ -59,7 +59,7 @@
                                                                                           placeholderImage:nil
                                                                                                   delegate:self];
         imageCarouselView.frame = CGRectMake(0, 264, self.view.frame.size.width, 200);
-        imageCarouselView.timeInterval = 10.0;
+        imageCarouselView.autoPagingInterval = 10.0;
         [self.view addSubview:imageCarouselView];
     }
     
@@ -74,7 +74,7 @@
                                                                                           placeholderImage:nil
                                                                                                   delegate:self];
         imageCarouselView.frame = CGRectMake(0, 464, self.view.frame.size.width, 200);
-        imageCarouselView.timeInterval = 10.0;
+        imageCarouselView.autoPagingInterval = 10.0;
         [self.view addSubview:imageCarouselView];
     }
 }

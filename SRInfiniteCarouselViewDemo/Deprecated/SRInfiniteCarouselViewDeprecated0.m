@@ -169,10 +169,10 @@ static NSString * const cacheDirectoryName = @"SRInfiniteCarouselView";
 - (void)setupImages {
     
     for (int i = 0; i < _imageArray.count; i++) {
-        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local images.
+        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {
             [_images addObject:_imageArray[i]];
         }
-        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet images.
+        if ([_imageArray[i] isKindOfClass:[NSString class]]) {
             if (_placeholderImage) {
                 [_images addObject:_placeholderImage];
             } else {
@@ -373,8 +373,7 @@ static NSString * const cacheDirectoryName = @"SRInfiniteCarouselView";
 - (void)updateContent {
     
     if (_scrollView.contentOffset.x == self.width) {
-        // If paging not finished do not update content.
-        return;
+        return; // If paging not finished do not update content.
     }
     
     _currentIndex = _nextIndex;

@@ -19,7 +19,7 @@
 /**
  Interval between automatic page turning, default is 5.0s.
  */
-@property (nonatomic, assign) NSTimeInterval timeInterval;
+@property (nonatomic, assign) NSTimeInterval autoPagingInterval;
 
 /**
  Tint color of current page indicator.
@@ -41,8 +41,6 @@
  */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
-@property (nonatomic, weak) id<SRImageCarouselViewDelegate> delegate;
-
 /**
  Create a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
  
@@ -50,16 +48,16 @@
  @param describeArray    Image describes are in the same order as the images.
  @param placeholderImage Placeholder image when internet images have not download.
  @param delegate         Delegate
- @return                 A SRInfiniteCarouselView object
+ @return A SRInfiniteCarouselView object
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary;
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
 - (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary;
 
 @end

@@ -10,6 +10,8 @@
 
 @interface SRInfiniteCarouselView () <UIScrollViewDelegate>
 
+@property (nonatomic, weak) id<SRImageCarouselViewDelegate> delegate;
+
 @property (nonatomic, strong) SRImageManager *imageManager;
 @property (nonatomic, strong) NSMutableArray *images;
 
@@ -26,7 +28,7 @@
 @property (nonatomic, assign) NSInteger currentIndex;
 @property (nonatomic, assign) NSInteger nextIndex;
 
-@property (nonatomic, strong) NSTimer *timer;
+@property (nonatomic, strong) NSTimer *autoPagingTimer;
 
 @end
 
@@ -36,10 +38,7 @@
 
 - (void)dealloc {
     
-    if (_timer) {
-        [_timer invalidate];
-        _timer = nil;
-    }
+    [self stopAutoPagingTimer];
 }
 
 #pragma mark - Lazy Load
@@ -56,7 +55,7 @@
             }
         };
         _imageManager.downloadImageFailure = ^(NSError *error, NSString *imageURLString) {
-            NSLog(@"Image: %@ download error: %@", imageURLString, error);
+            NSLog(@"downloadImageFailure imageURLString: %@ error: %@", imageURLString, error);
         };
     }
     return _imageManager;
@@ -121,12 +120,13 @@
         _delegate         = delegate;
         _placeholderImage = placeholderImage;
         
-        _images       = [NSMutableArray array];
+        _images = [NSMutableArray array];
+        
         _currentIndex = 0;
         _nextIndex    = 0;
         
         [self setupSubViews];
-        [self startTimer];
+        [self startAutoPagingTimer];
     }
     return self;
 }
@@ -251,29 +251,29 @@
 
 #pragma mark - Timer
 
-- (void)startTimer {
+- (void)startAutoPagingTimer {
     
     if (self.images.count <= 1) {
         return;
     }
     
-    if (_timer) {
-        [self stopTimer];
+    if (_autoPagingTimer) {
+        [self stopAutoPagingTimer];
     }
     
-    _timer = [NSTimer timerWithTimeInterval:_timeInterval == 0 ? 5.0 : _timeInterval
-                                     target:self
-                                   selector:@selector(nextPage)
-                                   userInfo:nil
-                                    repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:_timer forMode:NSRunLoopCommonModes];
+    _autoPagingTimer = [NSTimer timerWithTimeInterval:_autoPagingInterval == 0 ? 5.0 : _autoPagingInterval
+                                               target:self
+                                             selector:@selector(nextPage)
+                                             userInfo:nil
+                                              repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:_autoPagingTimer forMode:NSRunLoopCommonModes];
 }
 
-- (void)stopTimer {
+- (void)stopAutoPagingTimer {
     
-    if (_timer) {
-        [_timer invalidate];
-        _timer = nil;
+    if (_autoPagingTimer) {
+        [_autoPagingTimer invalidate];
+        _autoPagingTimer = nil;
     }
 }
 
@@ -329,12 +329,12 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
-    [self stopTimer]; // Stop timer when dragging scrollview manually.
+    [self stopAutoPagingTimer]; // Stop timer when dragging scrollview manually.
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     
-    [self startTimer]; // Start timer when stop dragging scrollview manually.
+    [self startAutoPagingTimer]; // Start timer when stop dragging scrollview manually.
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
@@ -399,11 +399,11 @@
     }
 }
 
-- (void)setTimeInterval:(NSTimeInterval)timeInterval {
+- (void)setAutoPagingInterval:(NSTimeInterval)autoPagingInterval {
     
-    if (_timeInterval != timeInterval) {
-        _timeInterval = timeInterval;
-        [self startTimer];
+    if (_autoPagingInterval != autoPagingInterval) {
+        _autoPagingInterval = autoPagingInterval;
+        [self startAutoPagingTimer];
     }
 }
 
