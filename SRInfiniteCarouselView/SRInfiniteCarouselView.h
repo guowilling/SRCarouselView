@@ -9,7 +9,6 @@
 
 @protocol SRImageCarouselViewDelegate <NSObject>
 
-@optional
 - (void)imageCarouselViewDidTapImageAtIndex:(NSInteger)index;
 
 @end
@@ -17,47 +16,42 @@
 @interface SRInfiniteCarouselView : UIView
 
 /**
- Interval between automatic page turning, default is 5.0s.
+ The interval of automatic paging, default is 5.0s.
  */
 @property (nonatomic, assign) NSTimeInterval autoPagingInterval;
 
 /**
- Tint color of current page indicator.
+ The tint color of current page indicator.
  */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
 /**
- Tint color of other page indicator.
+ The tint color of other page indicator.
  */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
 /**
- Image of current page indicator.
+ The image of current page indicator.
  */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
 /**
- Image of other page indicator.
+ The image of other page indicator.
  */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
 /**
- Create a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
+ Creates and returns a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
  
- @param imageArrary      Local images or the urls of images.
- @param describeArray    Image describes are in the same order as the images.
- @param placeholderImage Placeholder image when internet images have not download.
- @param delegate         Delegate
- @return A SRInfiniteCarouselView object
+ @param imageArrary      The local images or the urls of images or mixed of them.
+ @param describeArray    The describes which in the same order as the images.
+ @param placeholderImage The placeholder image when internet images have not download.
+ @param delegate         The delegate of this object.
+ @return A SRInfiniteCarouselView object.
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
-
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary;
 
 @end

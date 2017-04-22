@@ -97,21 +97,6 @@
     return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
 }
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary {
-    
-    return [self initWithImageArrary:imageArrary describeArray:nil];
-}
-
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
-    
-    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
-}
-
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
-    
-    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
-}
-
 - (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate {
     
     if (self = [super init]) {
@@ -180,22 +165,22 @@
 - (void)setupImages {
     
     for (int i = 0; i < _imageArray.count; i++) {
-        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // Local images.
+        if ([_imageArray[i] isKindOfClass:[UIImage class]]) {  // local image
             [self.images addObject:_imageArray[i]];
         }
-        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // Internet images.
-            if (_placeholderImage) { // Hold placeholder image if setted or use NSNull object replace if not.
+        if ([_imageArray[i] isKindOfClass:[NSString class]]) { // internet image
+            if (_placeholderImage) { // hold placeholder image if setted
                 [self.images addObject:_placeholderImage];
-            } else {
+            } else { // use NSNull object replace if not setted
                 [self.images addObject:[NSNull null]];
             }
-            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i]; // Use SRImageManager to download image.
+            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i]; // use SRImageManager to download image
         }
     }
     
-    if ([self.images[0] isKindOfClass:[NSNull class]]) { // Show first image or placeholder image if exist.
+    if ([self.images[0] isKindOfClass:[NSNull class]]) {
         _currentImageView.image = nil;
-    } else {
+    } else { // show first image or placeholder image if exists
         _currentImageView.image = self.images[0];
     }
 }
@@ -329,29 +314,29 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
     
-    [self stopAutoPagingTimer]; // Stop timer when dragging scrollview manually.
+    [self stopAutoPagingTimer]; // stop timer when dragging scrollview manually
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
     
-    [self startAutoPagingTimer]; // Start timer when stop dragging scrollview manually.
+    [self startAutoPagingTimer]; // start timer when stop dragging scrollview manually
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
     
-    [self updateContent]; // Update content when paging finishes manually.
+    [self updateContent]; // update content when paging finishes manually
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
     
-    [self updateContent]; // Update content when paging finishes automatically.
+    [self updateContent]; // update content when paging finishes automatically
 }
 
 - (void)updateContent {
     
     CGFloat width = _scrollView.frame.size.width;
-    if (_scrollView.contentOffset.x == width) {
-        return; // If paging not finished do not update content.
+    if (_scrollView.contentOffset.x == width) { // if paging not finished do not update content
+        return;
     }
     CGFloat height = _scrollView.frame.size.height;
     

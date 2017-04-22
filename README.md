@@ -3,9 +3,9 @@
 ## Features
 
 * Only use two UIImageView to achieve infinite carousel.
-* Do not rely on any third-party libraries, use the native API to download and cache images.
-* Support deleting cached images in the sandbox manually.
 * UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center.
+* Do not rely on any third-party libraries, use the native API to download and cache images.
+* Support to manually clear images that are cached in the sandbox.
 
 ## Show
 
@@ -19,6 +19,24 @@
 
 ### Manual
 > Drag the **SRInfiniteCarouselView** folder to the project.
+
+## APIs
+
+````objc
+/**
+ Creates and returns a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
+ 
+ @param imageArrary      The local images or the urls of images or mixed of them.
+ @param describeArray    The describes which in the same order as the images.
+ @param placeholderImage The placeholder image when internet images have not download.
+ @param delegate         The delegate of this object.
+ @return A SRInfiniteCarouselView object.
+ */
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
+````
 
 ## Usage
 
@@ -59,7 +77,7 @@ imageCarouselView.timeInterval = 10.0;
 ````
 
 ````objc
-// Mixed images
+// Mixed Images
 NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                         @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                         [UIImage imageNamed:@"coldplay03"],
@@ -73,45 +91,37 @@ imageCarouselView.timeInterval = 10.0;
 [self.view addSubview:imageCarouselView];
 ````
 
-````objc
-// Clear cached images in sandbox
-[[SRImageManager clearCachedImages];
-````
-
 ## Custom Settings
 
 ````objc
-/** 
- The time interval of auto Paging, Default is 5.0s. 
+/**
+ The interval of automatic paging, default is 5.0s.
  */
-@property (nonatomic, assign) NSTimeInterval timeInterval;
+@property (nonatomic, assign) NSTimeInterval autoPagingInterval;
 
-/** 
- Current page indicator tint color. 
+/**
+ The tint color of current page indicator.
  */
 @property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
 
-/** 
- Other page indicator tint color. 
+/**
+ The tint color of other page indicator.
  */
 @property (nonatomic, strong) UIColor *pageIndicatorTintColor;
 
-/** 
- Current page indicator image. 
+/**
+ The image of current page indicator.
  */
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 
-/** 
- Other page indicator image.
+/**
+ The image of other page indicator.
  */
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
 ## Significant Updates
 
-### 2017.02.15
-> Support CocoaPods.
-
-### 2017.01.10
-> Redesign class structure, add a class to manage network images. it can be applied to other network image download and cache place.   
-> If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated0 class is in 'Deprecated' folder.
+### 2017.01.11
+> Redesign class structure, add a class to manage network images. It can be applied to other network image download and cache place.   
+> If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated classes are in 'Deprecated' folder.

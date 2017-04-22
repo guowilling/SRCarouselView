@@ -28,7 +28,7 @@
                                                                              action:@selector(clearCachedImages)];
     
     {
-        // Network images
+        // Network Images
         NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                                 @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                                 @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
@@ -43,7 +43,7 @@
     }
 
     {
-        // Local images.
+        // Local Images
         NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
                                 [UIImage imageNamed:@"coldplay02"],
                                 [UIImage imageNamed:@"coldplay03"],
@@ -64,7 +64,7 @@
     }
     
     {
-        // Mixed images
+        // Mixed Images
         NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                                 @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                                 [UIImage imageNamed:@"coldplay03"],

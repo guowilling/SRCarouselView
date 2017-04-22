@@ -10,13 +10,13 @@
 
 @interface SRImageManager : NSObject
 
-@property (nonatomic, assign) NSUInteger repeatCountWhenDownloadFailure;
+@property (nonatomic, assign) NSUInteger repeatCountWhenDownloadFailed;
 
 @property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSInteger imageIndex);
 
 @property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
 
-- (void)downloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index;
+- (void)downloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex;
 
 + (void)clearCachedImages;
 

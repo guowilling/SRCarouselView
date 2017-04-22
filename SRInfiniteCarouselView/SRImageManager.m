@@ -44,14 +44,14 @@
 - (instancetype)init {
     
     if (self = [super init]) {
-        _repeatCountWhenDownloadFailure = 2;
+        _repeatCountWhenDownloadFailed = 2;
     }
     return self;
 }
 
-- (UIImage *)imageFromSandboxWithImageURLString:(NSString *)URLString {
+- (UIImage *)imageFromSandboxWithImageURLString:(NSString *)imageURLString {
     
-    NSString *imagePath = SRImagePath(URLString);
+    NSString *imagePath = SRImagePath(imageURLString);
     NSData *data = [NSData dataWithContentsOfFile:imagePath];
     if (data.length > 0 ) {
         return [UIImage imageWithData:data];
@@ -61,21 +61,21 @@
     return nil;
 }
 
-- (void)downloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index {
+- (void)downloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex {
     
-    UIImage *image = [self imageFromSandboxWithImageURLString:URLString];
+    UIImage *image = [self imageFromSandboxWithImageURLString:imageURLString];
     if (image) {
         if (self.downloadImageSuccess) {
-            self.downloadImageSuccess(image, index);
+            self.downloadImageSuccess(image, imageIndex);
         }
         return;
     }
     
-    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:URLString]
+    [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:imageURLString]
                                  completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          if (error) {
-                                             [self redownloadWithImageURLString:URLString imageIndex:index error:error];
+                                             [self redownloadWithImageURLString:imageURLString imageIndex:imageIndex error:error];
                                              return;
                                          }
                                          
@@ -85,27 +85,27 @@
                                          }
                                          
                                          if (self.downloadImageSuccess) {
-                                             self.downloadImageSuccess(image, index);
+                                             self.downloadImageSuccess(image, imageIndex);
                                          }
                                          
-                                         if (![data writeToFile:SRImagePath(URLString) atomically:YES]) {
+                                         if (![data writeToFile:SRImagePath(imageURLString) atomically:YES]) {
                                              NSLog(@"writeToFile Failed!");
                                          }
                                      });
                                  }] resume];
 }
 
-- (void)redownloadWithImageURLString:(NSString *)URLString imageIndex:(NSInteger)index error:(NSError *)error {
+- (void)redownloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex error:(NSError *)error {
     
-    NSNumber *redownloadNumber = self.redownloadManager[URLString];
+    NSNumber *redownloadNumber = self.redownloadManager[imageURLString];
     NSInteger redownloadTimes = redownloadNumber ? redownloadNumber.integerValue : 0;
-    if (self.repeatCountWhenDownloadFailure > redownloadTimes ) {
-        self.redownloadManager[URLString] = @(++redownloadTimes);
-        [self downloadWithImageURLString:URLString imageIndex:index];
+    if (self.repeatCountWhenDownloadFailed > redownloadTimes ) {
+        self.redownloadManager[imageURLString] = @(++redownloadTimes);
+        [self downloadWithImageURLString:imageURLString imageIndex:imageIndex];
         return;
     }
     if (self.downloadImageFailure) {
-        self.downloadImageFailure(error, URLString);
+        self.downloadImageFailure(error, imageURLString);
     }
 }
 

@@ -84,21 +84,6 @@ static NSString * const cacheDirectoryName = @"SRInfiniteCarouselView";
     return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
 }
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary {
-    
-    return [self initWithImageArrary:imageArrary describeArray:nil];
-}
-
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
-    
-    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
-}
-
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
-    
-    return [self initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
-}
-
 - (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRInfiniteCarouselViewDelegate>)delegate {
     
     if (self = [super init]) {
