@@ -7,10 +7,10 @@
 * Do not rely on any third-party libraries, use the native API to download and cache images.
 * Support to manually clear images that are cached in the sandbox.
 
-## Show
+## Screenshots
 
-![image](show1.png)
-![image](show2.png)
+![image](screenshot1.png)
+![image](screenshot2.png)
 
 ## Installation
 
