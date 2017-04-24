@@ -4,6 +4,10 @@
 //  Created by 郭伟林 on 17/1/10.
 //  Copyright © 2017年 SR. All rights reserved.
 //
+//  GitHub: https://github.com/guowilling/SRInfiniteCarouselView
+//  If you have any questions, submit an issue or email me. <guowilling90@gmail.com>
+//
+
 
 #import <UIKit/UIKit.h>
 
@@ -43,7 +47,7 @@
 /**
  Creates and returns a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
  
- @param imageArrary      The local images or the urls of images or mixed of them.
+ @param imageArrary      The local images, or urls of images, or mixed of them.
  @param describeArray    The describes which in the same order as the images.
  @param placeholderImage The placeholder image when internet images have not download.
  @param delegate         The delegate of this object.
