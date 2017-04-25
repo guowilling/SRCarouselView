@@ -13,20 +13,25 @@ Infinite carousel view with local images, urls of images or mixed of them.
 ![image](screenshot1.jpg)
 ![image](screenshot2.jpg)
 
-## Usage
+## APIs
 
 ````objc
 /**
  Creates and returns a SRInfiniteCarouselView object with imageArrary, describeArray, placeholderImage and delegate.
  
- @param imageArrary      The local images or the urls of images or mixed of them.
+ @param imageArrary      The local images, or urls of images, or mixed of them.
  @param describeArray    The describes which in the same order as the images.
  @param placeholderImage The placeholder image when internet images have not download.
  @param delegate         The delegate of this object.
  @return A SRInfiniteCarouselView object.
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRImageCarouselViewDelegate>)delegate;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
 ````
+
+## Usage
 
 ````objc
 // local images
@@ -79,14 +84,36 @@ imageCarouselView.autoPagingInterval = 10.0;
 [self.view addSubview:imageCarouselView];
 ````
 
-## Updates
+## Custom
+````objc
+/**
+ The interval of automatic paging, default is 5.0s.
+ */
+@property (nonatomic, assign) NSTimeInterval autoPagingInterval;
+
+/**
+ The tint color of current page indicator.
+ */
+@property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
+
+/**
+ The tint color of other page indicator.
+ */
+@property (nonatomic, strong) UIColor *pageIndicatorTintColor;
+
+/**
+ The image of current page indicator.
+ */
+@property (nonatomic, strong) UIImage *currentPageIndicatorImage;
+
+/**
+ The image of other page indicator.
+ */
+@property (nonatomic, strong) UIImage *pageIndicatorImage;
+````
+
+## Significant Update
 
 ### 2017.01.11
 Redesign class structure, add a class to manage network images. It can be applied to other network image download and cache place.   
 If you do not like the new way of using, you can also use the previous way, the SRInfiniteCarouselViewDeprecated classes are in 'Deprecated' folder.
-
-## More
-
-Author: [guowilling](https://github.com/guowilling)  
-Email: <guowilling90@gmail.com>   
-If you have any questions, submit an issue or email me.
