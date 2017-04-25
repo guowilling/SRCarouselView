@@ -1,11 +1,9 @@
 //
 //  SRInfiniteCarouselView.m
+//  SRInfiniteCarouselView
 //
 //  Created by 郭伟林 on 17/1/10.
 //  Copyright © 2017年 SR. All rights reserved.
-//
-//  GitHub: https://github.com/guowilling/SRInfiniteCarouselView
-//  If you have any questions, submit an issue or email me. <guowilling90@gmail.com>
 //
 
 #import "SRInfiniteCarouselView.h"

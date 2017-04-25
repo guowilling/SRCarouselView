@@ -16,6 +16,11 @@
 
 @implementation ViewController
 
+- (BOOL)prefersStatusBarHidden {
+    
+    return YES;
+}
+
 - (void)viewDidLoad {
     
     [super viewDidLoad];
@@ -28,22 +33,7 @@
                                                                              action:@selector(clearCachedImages)];
     
     {
-        // Network Images
-        NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
-                                @"http://i1.piimg.com/4851/a47d409e267eb871.png",
-                                @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
-                                @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
-        
-        SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
-                                                                                             describeArray:nil
-                                                                                          placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"]
-                                                                                                  delegate:self];
-        imageCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
-        [self.view addSubview:imageCarouselView];
-    }
-
-    {
-        // Local Images
+        // local images
         NSArray *imageArray = @[[UIImage imageNamed:@"coldplay01"],
                                 [UIImage imageNamed:@"coldplay02"],
                                 [UIImage imageNamed:@"coldplay03"],
@@ -64,7 +54,22 @@
     }
     
     {
-        // Mixed Images
+        // urls of images
+        NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
+                                @"http://i1.piimg.com/4851/a47d409e267eb871.png",
+                                @"http://i1.piimg.com/4851/a19f19acb7551cce.png",
+                                @"http://i1.piimg.com/4851/e92063eb386c232a.png"];
+        
+        SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselViewWithImageArrary:imageArray
+                                                                                             describeArray:nil
+                                                                                          placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"]
+                                                                                                  delegate:self];
+        imageCarouselView.frame = CGRectMake(0, 64, self.view.frame.size.width, 200);
+        [self.view addSubview:imageCarouselView];
+    }
+    
+    {
+        // mixed of them
         NSArray *imageArray = @[@"http://i1.piimg.com/4851/859cc36239f5a49e.png",
                                 @"http://i1.piimg.com/4851/a47d409e267eb871.png",
                                 [UIImage imageNamed:@"coldplay03"],
