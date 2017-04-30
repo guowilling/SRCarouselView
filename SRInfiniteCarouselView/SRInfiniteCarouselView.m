@@ -111,7 +111,7 @@
         _currentIndex = 0;
         _nextIndex    = 0;
         
-        [self setupSubViews];
+        [self setup];
         [self startAutoPagingTimer];
     }
     return self;
@@ -119,20 +119,18 @@
 
 #pragma mark - Setup UI
 
-- (void)setupSubViews {
+- (void)setup {
     
     if (_imageArray.count == 0) {
         return;
     }
     
-    [self setupScrollView];
-    [self setupPageControl];
-    
+    [self setupSubviews];
     [self setupImages];
     [self setupImageDescribes];
 }
 
-- (void)setupScrollView {
+- (void)setupSubviews {
     
     _scrollView = [[UIScrollView alloc] init];
     _scrollView.pagingEnabled = YES;
@@ -151,9 +149,6 @@
     _nextImageView = [[UIImageView alloc] init];
     _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
     [_scrollView addSubview:_nextImageView];
-}
-
-- (void)setupPageControl {
     
     _pageControl = [[UIPageControl alloc] init];
     _pageControl.hidesForSinglePage = YES;
@@ -175,7 +170,7 @@
             } else { // use NSNull object replace if not setted
                 [self.images addObject:[NSNull null]];
             }
-            [self.imageManager downloadWithImageURLString:self.imageArray[i] imageIndex:i]; // use SRImageManager to download image
+            [self.imageManager downloadImageURLString:self.imageArray[i] imageIndex:i]; // use SRImageManager to download image
         }
     }
     

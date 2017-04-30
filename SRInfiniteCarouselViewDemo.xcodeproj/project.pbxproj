@@ -17,7 +17,6 @@
 		68E05AE81D7AC0C000F214D5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE71D7AC0BF00F214D5 /* ViewController.m */; };
 		68E05AEB1D7AC0C000F214D5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AE91D7AC0C000F214D5 /* Main.storyboard */; };
 		68E05AED1D7AC0C000F214D5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AEC1D7AC0C000F214D5 /* Assets.xcassets */; };
-		68E05AF01D7AC0C000F214D5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68E05AEE1D7AC0C000F214D5 /* LaunchScreen.storyboard */; };
 		68E1AD961E30AB630034363B /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD701E30AB630034363B /* MKAnnotationView+WebCache.m */; };
 		68E1AD971E30AB630034363B /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD721E30AB630034363B /* NSData+ImageContentType.m */; };
 		68E1AD981E30AB630034363B /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD741E30AB630034363B /* SDImageCache.m */; };
@@ -39,6 +38,7 @@
 		68E1ADA81E30AB630034363B /* SRInfiniteCarouselViewDeprecated2.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AD951E30AB630034363B /* SRInfiniteCarouselViewDeprecated2.m */; };
 		68E1AE491E24B07F00404611 /* SRImageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE481E24B07F00404611 /* SRImageManager.m */; };
 		68E1AE881E24C53600404611 /* SRInfiniteCarouselView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */; };
+		6EBF581C1EB1164600B2B986 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 6EBF581B1EB1164600B2B986 /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -55,7 +55,6 @@
 		68E05AE71D7AC0BF00F214D5 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		68E05AEA1D7AC0C000F214D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		68E05AEC1D7AC0C000F214D5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		68E05AEF1D7AC0C000F214D5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		68E05AF11D7AC0C000F214D5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		68E1AD6F1E30AB630034363B /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		68E1AD701E30AB630034363B /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
@@ -100,6 +99,7 @@
 		68E1AE481E24B07F00404611 /* SRImageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRImageManager.m; sourceTree = "<group>"; };
 		68E1AE861E24C53600404611 /* SRInfiniteCarouselView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SRInfiniteCarouselView.h; sourceTree = "<group>"; };
 		68E1AE871E24C53600404611 /* SRInfiniteCarouselView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SRInfiniteCarouselView.m; sourceTree = "<group>"; };
+		6EBF581B1EB1164600B2B986 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,6 +146,7 @@
 			children = (
 				68E05AE61D7AC0BF00F214D5 /* ViewController.h */,
 				68E05AE71D7AC0BF00F214D5 /* ViewController.m */,
+				68E05AE91D7AC0C000F214D5 /* Main.storyboard */,
 				68E05AE01D7AC0BF00F214D5 /* Supporting Files */,
 			);
 			path = SRInfiniteCarouselViewDemo;
@@ -160,9 +161,8 @@
 				68E05AE11D7AC0BF00F214D5 /* main.m */,
 				68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */,
 				68E05AE41D7AC0BF00F214D5 /* AppDelegate.m */,
-				68E05AE91D7AC0C000F214D5 /* Main.storyboard */,
+				6EBF581B1EB1164600B2B986 /* LaunchScreen.storyboard */,
 				68E05AEC1D7AC0C000F214D5 /* Assets.xcassets */,
-				68E05AEE1D7AC0C000F214D5 /* LaunchScreen.storyboard */,
 				68E05AF11D7AC0C000F214D5 /* Info.plist */,
 			);
 			name = "Supporting Files";
@@ -293,9 +293,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				683779851E0AA047001C9EB8 /* coldplay03.png in Resources */,
+				6EBF581C1EB1164600B2B986 /* LaunchScreen.storyboard in Resources */,
 				68A849BC1E306A1D0088C16E /* placeholder_image.jpg in Resources */,
 				683779841E0AA047001C9EB8 /* coldplay02.png in Resources */,
-				68E05AF01D7AC0C000F214D5 /* LaunchScreen.storyboard in Resources */,
 				683779831E0AA047001C9EB8 /* coldplay01.png in Resources */,
 				68E05AED1D7AC0C000F214D5 /* Assets.xcassets in Resources */,
 				683779861E0AA047001C9EB8 /* coldplay04.png in Resources */,
@@ -346,14 +346,6 @@
 				68E05AEA1D7AC0C000F214D5 /* Base */,
 			);
 			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
-		68E05AEE1D7AC0C000F214D5 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				68E05AEF1D7AC0C000F214D5 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

@@ -62,7 +62,7 @@
     return nil;
 }
 
-- (void)downloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex {
+- (void)downloadImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex {
     
     UIImage *image = [self imageFromSandboxWithImageURLString:imageURLString];
     if (image) {
@@ -102,7 +102,7 @@
     NSInteger redownloadTimes = redownloadNumber ? redownloadNumber.integerValue : 0;
     if (self.repeatCountWhenDownloadFailed > redownloadTimes ) {
         self.redownloadManager[imageURLString] = @(++redownloadTimes);
-        [self downloadWithImageURLString:imageURLString imageIndex:imageIndex];
+        [self downloadImageURLString:imageURLString imageIndex:imageIndex];
         return;
     }
     if (self.downloadImageFailure) {

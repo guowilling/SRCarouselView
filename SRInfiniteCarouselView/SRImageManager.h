@@ -17,7 +17,7 @@
 
 @property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
 
-- (void)downloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex;
+- (void)downloadImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex;
 
 + (void)clearCachedImages;
 
