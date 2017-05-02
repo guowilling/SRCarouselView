@@ -1,6 +1,4 @@
-# SRInfiniteCarouselView
-
-Infinite carousel view with local images, urls of images or mixed of them. Only use two UIImageView to achieve infinite carousel. UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center. Not rely on any third-party libraries, use the native api to download and cache image.
+**SRInfiniteCarouselView** is a infinite carousel view with local images, urls of images or mixed of them. Only use two UIImageView to achieve infinite carousel. UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center. Not rely on any third-party libraries, use the native api to download and cache image.
 
 ## Screenshots
 
@@ -73,21 +71,6 @@ SRInfiniteCarouselView *imageCarouselView = [SRInfiniteCarouselView sr_carouselV
 imageCarouselView.frame = CGRectMake(0, 464, self.view.frame.size.width, 200);
 imageCarouselView.autoPagingInterval = 10.0;
 [self.view addSubview:imageCarouselView];
-````
-
-## Custom
-
-````objc
-/**
- The time interval of auto paging, default is 5.0s.
- */
-@property (nonatomic, assign) NSTimeInterval autoPagingInterval;
-
-@property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
-@property (nonatomic, strong) UIColor *pageIndicatorTintColor;
-
-@property (nonatomic, strong) UIImage *currentPageIndicatorImage;
-@property (nonatomic, strong) UIImage *pageIndicatorImage;
 ````
 
 ## Significant Update
