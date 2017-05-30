@@ -11,6 +11,7 @@
 @interface SRCarouselView () <UIScrollViewDelegate>
 
 @property (nonatomic, weak) id<SRCarouselViewDelegate> delegate;
+@property (nonatomic, copy) DidTapCarouselViewAtIndexBlock block;
 
 @property (nonatomic, strong) SRCarouselImageManager *imageManager;
 @property (nonatomic, strong) NSMutableArray *images;
@@ -101,8 +102,34 @@
     if (self = [super init]) {
         _imageArray       = imageArrary;
         _describeArray    = describeArray;
-        _delegate         = delegate;
         _placeholderImage = placeholderImage;
+        
+        _delegate = delegate;
+        
+        _images = [NSMutableArray array];
+        
+        _currentIndex = 0;
+        _nextIndex    = 0;
+        
+        [self setup];
+        [self startAutoPagingTimer];
+    }
+    return self;
+}
+
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block {
+    
+    return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage block:block];
+}
+
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block {
+    
+    if (self = [super init]) {
+        _imageArray       = imageArrary;
+        _describeArray    = describeArray;
+        _placeholderImage = placeholderImage;
+        
+        _block = block;
         
         _images = [NSMutableArray array];
         
@@ -270,8 +297,12 @@
 
 - (void)didTapCurrentImageView {
     
-    if ([self.delegate respondsToSelector:@selector(carouselViewDidTapImageAtIndex:)]) {
-        [self.delegate carouselViewDidTapImageAtIndex:self.currentIndex];
+    if ([self.delegate respondsToSelector:@selector(didTapCarouselViewAtIndex:)]) {
+        [self.delegate didTapCarouselViewAtIndex:self.currentIndex];
+    }
+    
+    if (self.block) {
+        self.block(self.currentIndex);
     }
 }
 

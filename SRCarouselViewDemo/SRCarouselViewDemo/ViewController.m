@@ -66,7 +66,9 @@
         NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i];
         [describeArray addObject:tempDesc];
     }
-    SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:nil placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"] delegate:self];
+    SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:nil placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"] block:^(NSInteger index) {
+        NSLog(@"index: %zd", index);
+    }];
     carouselView.frame = CGRectMake(0, 245, self.view.frame.size.width, 200);
     [self.view addSubview:carouselView];
 }
@@ -89,9 +91,9 @@
     [self.view addSubview:carouselView];
 }
 
-- (void)carouselViewDidTapImageAtIndex:(NSInteger)index {
+- (void)didTapCarouselViewAtIndex:(NSInteger)index {
     
-    NSLog(@"infiniteCarouselViewDidTapImageAtIndex: %zd", index);
+    NSLog(@"index: %zd", index);
 }
 
 @end

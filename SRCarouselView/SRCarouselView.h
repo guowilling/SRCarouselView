@@ -10,9 +10,11 @@
 
 @protocol SRCarouselViewDelegate <NSObject>
 
-- (void)carouselViewDidTapImageAtIndex:(NSInteger)index;
+- (void)didTapCarouselViewAtIndex:(NSInteger)index;
 
 @end
+
+typedef void (^DidTapCarouselViewAtIndexBlock)(NSInteger index);
 
 @interface SRCarouselView : UIView
 
@@ -27,6 +29,12 @@
 @property (nonatomic, strong) UIImage *currentPageIndicatorImage;
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
+
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
+
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
+
 /**
  Creates and returns a infinite carousel view with imageArrary, describeArray, placeholderImage and delegate.
  
@@ -34,12 +42,20 @@
  @param describeArray    An array contains image describes which in the same order as the images.
  @param placeholderImage The placeholder image when network image have not downloaded.
  @param delegate         The receiver’s delegate object.
- @return A newly infinite carousel view.
+ @return A newly carousel view.
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRCarouselViewDelegate>)delegate;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
+
+/**
+ Creates and returns a infinite carousel view with imageArrary, describeArray, placeholderImage and block.
+
+ @param imageArrary      An array contains local images, or urls of images, or mixed of them.
+ @param describeArray    An array contains image describes which in the same order as the images.
+ @param placeholderImage The placeholder image when network image have not downloaded.
+ @param block            A block object to be executed when tap the carousel view.
+ @return A newly carousel view.
+ */
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block;
 
 @end
 
