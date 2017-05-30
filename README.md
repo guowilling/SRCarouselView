@@ -1,12 +1,24 @@
 # SRCarouselView
 
-A carousel view that only uses two UIImageView to achieve infinite carousel. It is created with an array that can contain local images, network images or both of them. UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center. Not rely on any third-party libraries, use the native api to download and cache image.
+A carousel view that only uses two UIImageView to achieve infinite carousel.
 
 ![image](./screenshots.png)
 
-## Usage
+## Features
+
+* [x] Creates with an array that can contain local images, network images or both of them. 
+* [x] Not rely on any third-party libraries, use the native api to download and cache image.
+* [x] UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center. 
+
+## APIs
 
 ````objc
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
+
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
+
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
+
 /**
  Creates and returns a infinite carousel view with imageArrary, describeArray, placeholderImage and delegate.
  
@@ -14,13 +26,23 @@ A carousel view that only uses two UIImageView to achieve infinite carousel. It 
  @param describeArray    An array contains image describes which in the same order as the images.
  @param placeholderImage The placeholder image when network image have not downloaded.
  @param delegate         The receiver’s delegate object.
- @return A newly infinite carousel view.
+ @return A newly carousel view.
  */
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRCarouselViewDelegate>)delegate;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
+
+/**
+ Creates and returns a infinite carousel view with imageArrary, describeArray, placeholderImage and block.
+
+ @param imageArrary      An array contains local images, or urls of images, or mixed of them.
+ @param describeArray    An array contains image describes which in the same order as the images.
+ @param placeholderImage The placeholder image when network image have not downloaded.
+ @param block            A block object to be executed when tap the carousel view.
+ @return A newly carousel view.
+ */
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block;
 ````
+
+## Usage
 
 ````objc
 // Local Images.
@@ -52,7 +74,9 @@ for (NSInteger i = 0; i < imageArray.count; i++) {
     NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i];
     [describeArray addObject:tempDesc];
 }
-SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:nil placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"] delegate:self];
+SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:nil placeholderImage:[UIImage imageNamed:@"placeholder_image.jpg"] block:^(NSInteger index) {
+    NSLog(@"index: %zd", index);
+}];
 carouselView.frame = CGRectMake(0, 245, self.view.frame.size.width, 200);
 [self.view addSubview:carouselView];
 ````
@@ -75,7 +99,17 @@ carouselView.autoPagingInterval = 10.0;
 [self.view addSubview:carouselView];
 ````
 
-## Significant Update
+## Custom
 
-### 2017.01.11
-Redesign class structure, add a class to manage network images. It can be applied to other network image download and cache place.   
+````objc
+/**
+ The time interval of auto paging, default is 5.0s.
+ */
+@property (nonatomic, assign) NSTimeInterval autoPagingInterval;
+
+@property (nonatomic, strong) UIColor *currentPageIndicatorTintColor;
+@property (nonatomic, strong) UIColor *pageIndicatorTintColor;
+
+@property (nonatomic, strong) UIImage *currentPageIndicatorImage;
+@property (nonatomic, strong) UIImage *pageIndicatorImage;
+````
