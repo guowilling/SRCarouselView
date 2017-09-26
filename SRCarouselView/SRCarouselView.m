@@ -156,7 +156,7 @@
 }
 
 - (void)setupSubviews {
-    
+
     _scrollView = [[UIScrollView alloc] init];
     _scrollView.pagingEnabled = YES;
     _scrollView.bounces = NO;
@@ -167,12 +167,14 @@
     
     _currentImageView = [[UIImageView alloc] init];
     _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _currentImageView.layer.masksToBounds = YES; // do must set!
     _currentImageView.userInteractionEnabled = YES;
     [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCurrentImageView)]];
     [_scrollView addSubview:_currentImageView];
     
     _nextImageView = [[UIImageView alloc] init];
     _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _currentImageView.layer.masksToBounds = YES; // do must set!
     [_scrollView addSubview:_nextImageView];
     
     _pageControl = [[UIPageControl alloc] init];
