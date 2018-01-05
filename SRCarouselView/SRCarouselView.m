@@ -174,7 +174,7 @@
     
     _nextImageView = [[UIImageView alloc] init];
     _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _currentImageView.layer.masksToBounds = YES; // do must set!
+    _nextImageView.layer.masksToBounds = YES; // do must set!
     [_scrollView addSubview:_nextImageView];
     
     _pageControl = [[UIPageControl alloc] init];
