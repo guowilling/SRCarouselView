@@ -10,11 +10,11 @@
 
 @protocol SRCarouselViewDelegate <NSObject>
 
-- (void)didTapCarouselViewAtIndex:(NSInteger)index;
+- (void)carouselViewDidTapCarouselViewAtIndex:(NSInteger)index;
 
 @end
 
-typedef void (^DidTapCarouselViewAtIndexBlock)(NSInteger index);
+typedef void (^SRDidTapCarouselViewAtIndexBlock)(NSInteger index);
 
 @interface SRCarouselView : UIView
 
@@ -30,9 +30,7 @@ typedef void (^DidTapCarouselViewAtIndexBlock)(NSInteger index);
 @property (nonatomic, strong) UIImage *pageIndicatorImage;
 
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary;
-
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray;
-
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage;
 
 /**
@@ -44,7 +42,10 @@ typedef void (^DidTapCarouselViewAtIndexBlock)(NSInteger index);
  @param delegate         The receiver’s delegate object.
  @return A newly carousel view.
  */
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRCarouselViewDelegate>)delegate;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary
+                                 describeArray:(NSArray *)describeArray
+                              placeholderImage:(UIImage *)placeholderImage
+                                      delegate:(id<SRCarouselViewDelegate>)delegate;
 
 /**
  Creates and returns a infinite carousel view with imageArrary, describeArray, placeholderImage and block.
@@ -55,21 +56,10 @@ typedef void (^DidTapCarouselViewAtIndexBlock)(NSInteger index);
  @param block            A block object to be executed when tap the carousel view.
  @return A newly carousel view.
  */
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block;
-
-@end
-
-#pragma mark -
-
-@interface SRCarouselImageManager : NSObject
-
-@property (nonatomic, assign) NSUInteger repeatCountWhenDownloadFailed;
-
-@property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSInteger imageIndex);
-
-@property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
-
-- (void)downloadImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex;
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary
+                                 describeArray:(NSArray *)describeArray
+                              placeholderImage:(UIImage *)placeholderImage
+                                         block:(SRDidTapCarouselViewAtIndexBlock)block;
 
 + (void)clearCachedImages;
 

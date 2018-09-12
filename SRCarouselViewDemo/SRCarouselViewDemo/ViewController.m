@@ -16,12 +16,10 @@
 @implementation ViewController
 
 - (BOOL)prefersStatusBarHidden {
-    
     return YES;
 }
 
 - (void)viewDidLoad {
-    
     [super viewDidLoad];
     
     [self carouselViewWithLocalImages];
@@ -31,18 +29,12 @@
     [self carouselViewWithMixedImages];
 }
 
-- (void)clearCachedImages {
-    
-    [SRCarouselImageManager clearCachedImages];
-}
-
 - (void)carouselViewWithLocalImages {
-    
-    NSArray *imageArray = @[[UIImage imageNamed:@"logo01"],
-                            [UIImage imageNamed:@"logo02"],
-                            [UIImage imageNamed:@"logo03"],
-                            [UIImage imageNamed:@"logo04"],
-                            [UIImage imageNamed:@"logo05"]];
+    NSArray *imageArray = @[[UIImage imageNamed:@"logo01.jpg"],
+                            [UIImage imageNamed:@"logo02.jpg"],
+                            [UIImage imageNamed:@"logo03.jpg"],
+                            [UIImage imageNamed:@"logo04.jpg"],
+                            [UIImage imageNamed:@"logo05.jpg"]];
     NSMutableArray *describeArray = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < imageArray.count; i++) {
         NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i + 1];
@@ -55,12 +47,11 @@
 }
 
 - (void)carouselViewWithNetworkImages {
-    
-    NSArray *imageArray = @[@"http://i4.buimg.com/593517/ad2538d53ec1a351.jpg",
-                            @"http://i1.piimg.com/593517/25a7b62e81cafc4e.jpg",
-                            @"http://i1.piimg.com/593517/c3412974369d544a.jpg",
-                            @"http://i1.piimg.com/593517/d057e12c45ecbcb7.jpg",
-                            @"http://i1.piimg.com/593517/560715fb9a38df95.jpg"];
+    NSArray *imageArray = @[@"https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?x-oss-process=image/format,png",
+                            @"https://yixunfiles-ali.yixun.arhieason.com/8f8b02a025a7b62e81cafc4e9d89f70e_jpg.jpg?x-oss-process=image/format,png",
+                            @"https://yixunfiles-ali.yixun.arhieason.com/6c72618dc3412974369d544a2734d5cb_jpg.jpg?x-oss-process=image/format,png",
+                            @"https://yixunfiles-ali.yixun.arhieason.com/63a0bb8cd057e12c45ecbcb7f24e4ecf_jpg.jpg?x-oss-process=image/format,png",
+                            @"https://yixunfiles-ali.yixun.arhieason.com/2393d812560715fb9a38df9550b1f749_jpg.jpg?x-oss-process=image/format,png"];
     NSMutableArray *describeArray = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < imageArray.count; i++) {
         NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i];
@@ -74,26 +65,24 @@
 }
 
 - (void)carouselViewWithMixedImages {
-    
-    NSArray *imageArray = @[@"http://i4.buimg.com/593517/ad2538d53ec1a351.jpg",
-                            @"http://i1.piimg.com/593517/25a7b62e81cafc4e.jpg",
-                            [UIImage imageNamed:@"logo03"],
-                            [UIImage imageNamed:@"logo04"],
-                            [UIImage imageNamed:@"logo05"]];
+    NSArray *imageArray = @[@"https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?x-oss-process=image/format,png",
+                            @"https://yixunfiles-ali.yixun.arhieason.com/8f8b02a025a7b62e81cafc4e9d89f70e_jpg.jpg?x-oss-process=image/format,png",
+                            [UIImage imageNamed:@"logo03.jpg"],
+                            [UIImage imageNamed:@"logo04.jpg"],
+                            [UIImage imageNamed:@"logo05.jpg"]];
     NSMutableArray *describeArray = [[NSMutableArray alloc] init];
     for (NSInteger i = 0; i < imageArray.count; i++) {
         NSString *tempDesc = [NSString stringWithFormat:@"Image Description"];
         [describeArray addObject:tempDesc];
     }
-    SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:describeArray placeholderImage:[UIImage imageNamed:@"placeholder"] delegate:self];
+    SRCarouselView *carouselView = [SRCarouselView sr_carouselViewWithImageArrary:imageArray describeArray:describeArray placeholderImage:[UIImage imageNamed:@"placeholder.png"] delegate:self];
     carouselView.frame = CGRectMake(0, 446, self.view.frame.size.width, 200);
     carouselView.autoPagingInterval = 10.0;
     [self.view addSubview:carouselView];
 }
 
-- (void)didTapCarouselViewAtIndex:(NSInteger)index {
-    
-    NSLog(@"index: %zd", index);
+- (void)carouselViewDidTapCarouselViewAtIndex:(NSInteger)index {
+    NSLog(@"carouselViewDidTapCarouselViewAtIndex index: %zd", index);
 }
 
 @end

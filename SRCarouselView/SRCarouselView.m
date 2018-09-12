@@ -8,10 +8,26 @@
 
 #import "SRCarouselView.h"
 
+@interface SRCarouselImageManager : NSObject
+
+@property (nonatomic, assign) NSUInteger repeatCountWhenDownloadFailed;
+
+@property (nonatomic, copy) void(^downloadImageSuccess)(UIImage *image, NSInteger imageIndex);
+
+@property (nonatomic, copy) void(^downloadImageFailure)(NSError *error, NSString *imageURLString);
+
+- (void)downloadImage:(NSString *)imageURLString index:(NSInteger)imageIndex;
+
++ (void)clearCachedImages;
+
+@end
+
+#pragma mark -
+
 @interface SRCarouselView () <UIScrollViewDelegate>
 
 @property (nonatomic, weak) id<SRCarouselViewDelegate> delegate;
-@property (nonatomic, copy) DidTapCarouselViewAtIndexBlock block;
+@property (nonatomic, copy) SRDidTapCarouselViewAtIndexBlock block;
 
 @property (nonatomic, strong) SRCarouselImageManager *imageManager;
 @property (nonatomic, strong) NSMutableArray *images;
@@ -39,14 +55,12 @@
 #pragma mark - Overriding
 
 - (void)dealloc {
-    
     [self stopAutoPagingTimer];
 }
 
 #pragma mark - Lazy Load
 
 - (SRCarouselImageManager *)imageManager {
-    
     if (!_imageManager) {
         __weak typeof(self) weakSelf = self;
         _imageManager = [[SRCarouselImageManager alloc] init];
@@ -64,7 +78,6 @@
 }
 
 - (UILabel *)descLabel {
-    
     if (!_descLabel) {
         _descLabel = [[UILabel alloc] init];
         _descLabel.textColor = [UIColor whiteColor];
@@ -78,27 +91,33 @@
 #pragma mark - Init Methods
 
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary {
-    
-    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:nil];
+    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:nil placeholderImage:nil delegate:nil];
 }
 
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray {
-    
-    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil];
+    return [self sr_carouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:nil delegate:nil];
 }
 
 + (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage {
-    
     return [self sr_carouselViewWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:nil];
 }
 
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRCarouselViewDelegate>)delegate {
-    
-    return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage delegate:delegate];
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary
+                                 describeArray:(NSArray *)describeArray
+                              placeholderImage:(UIImage *)placeholderImage
+                                      delegate:(id<SRCarouselViewDelegate>)delegate
+{
+    return [[self alloc] initWithImageArrary:imageArrary
+                               describeArray:describeArray
+                            placeholderImage:placeholderImage
+                                    delegate:delegate];
 }
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage delegate:(id<SRCarouselViewDelegate>)delegate {
-    
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary
+                      describeArray:(NSArray *)describeArray
+                   placeholderImage:(UIImage *)placeholderImage
+                           delegate:(id<SRCarouselViewDelegate>)delegate
+{
     if (self = [super init]) {
         _imageArray       = imageArrary;
         _describeArray    = describeArray;
@@ -117,13 +136,22 @@
     return self;
 }
 
-+ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block {
-    
-    return [[self alloc] initWithImageArrary:imageArrary describeArray:describeArray placeholderImage:placeholderImage block:block];
++ (instancetype)sr_carouselViewWithImageArrary:(NSArray *)imageArrary
+                                 describeArray:(NSArray *)describeArray
+                              placeholderImage:(UIImage *)placeholderImage
+                                         block:(SRDidTapCarouselViewAtIndexBlock)block
+{
+    return [[self alloc] initWithImageArrary:imageArrary
+                               describeArray:describeArray
+                            placeholderImage:placeholderImage
+                                       block:block];
 }
 
-- (instancetype)initWithImageArrary:(NSArray *)imageArrary describeArray:(NSArray *)describeArray placeholderImage:(UIImage *)placeholderImage block:(DidTapCarouselViewAtIndexBlock)block {
-    
+- (instancetype)initWithImageArrary:(NSArray *)imageArrary
+                      describeArray:(NSArray *)describeArray
+                   placeholderImage:(UIImage *)placeholderImage
+                              block:(SRDidTapCarouselViewAtIndexBlock)block
+{
     if (self = [super init]) {
         _imageArray       = imageArrary;
         _describeArray    = describeArray;
@@ -145,37 +173,22 @@
 #pragma mark - Setup UI
 
 - (void)setup {
-    
     if (_imageArray.count == 0) {
         return;
     }
-    
     [self setupSubviews];
     [self setupImages];
     [self setupImageDescribes];
 }
 
 - (void)setupSubviews {
-
     _scrollView = [[UIScrollView alloc] init];
+    _scrollView.delegate = self;
     _scrollView.pagingEnabled = YES;
     _scrollView.bounces = NO;
     _scrollView.showsHorizontalScrollIndicator = NO;
     _scrollView.showsVerticalScrollIndicator = NO;
-    _scrollView.delegate = self;
     [self addSubview:_scrollView];
-    
-    _currentImageView = [[UIImageView alloc] init];
-    _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _currentImageView.layer.masksToBounds = YES; // do must set!
-    _currentImageView.userInteractionEnabled = YES;
-    [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCurrentImageView)]];
-    [_scrollView addSubview:_currentImageView];
-    
-    _nextImageView = [[UIImageView alloc] init];
-    _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
-    _nextImageView.layer.masksToBounds = YES; // do must set!
-    [_scrollView addSubview:_nextImageView];
     
     _pageControl = [[UIPageControl alloc] init];
     _pageControl.hidesForSinglePage = YES;
@@ -183,10 +196,22 @@
     _pageControl.numberOfPages = _imageArray.count;
     _pageControl.currentPage = 0;
     [self addSubview:_pageControl];
+    
+    _currentImageView = [[UIImageView alloc] init];
+    _currentImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _currentImageView.layer.masksToBounds = YES;
+    [_scrollView addSubview:_currentImageView];
+    
+    _nextImageView = [[UIImageView alloc] init];
+    _nextImageView.contentMode = UIViewContentModeScaleAspectFill;
+    _nextImageView.layer.masksToBounds = YES;
+    [_scrollView addSubview:_nextImageView];
+    
+    _currentImageView.userInteractionEnabled = YES;
+    [_currentImageView addGestureRecognizer:[[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didTapCurrentImageView)]];
 }
 
 - (void)setupImages {
-    
     for (int i = 0; i < _imageArray.count; i++) {
         if ([_imageArray[i] isKindOfClass:[UIImage class]]) { // local image
             [self.images addObject:_imageArray[i]];
@@ -197,7 +222,7 @@
             } else { // use NSNull object replace if not setted
                 [self.images addObject:[NSNull null]];
             }
-            [self.imageManager downloadImageURLString:self.imageArray[i] imageIndex:i]; // use SRImageManager to download image
+            [self.imageManager downloadImage:self.imageArray[i] index:i]; // use SRCarouselImageManager to download image
         }
     }
     
@@ -209,11 +234,10 @@
 }
 
 - (void)setupImageDescribes {
-    
     if (_describeArray && _describeArray.count > 0) {
         if (_describeArray.count < self.images.count) {
             NSMutableArray *arrayM = [NSMutableArray arrayWithArray:_describeArray];
-            for (NSInteger i = _describeArray.count; i< self.images.count; i++) {
+            for (NSInteger i = _describeArray.count; i < self.images.count; i++) {
                 [arrayM addObject:@""];
             }
             _describeArray = arrayM;
@@ -224,12 +248,12 @@
         [_bottomContainer addSubview:self.descLabel];
         
         self.descLabel.text = _describeArray[0];
+        
         [self bringSubviewToFront:_pageControl];
     }
 }
 
 - (void)layoutSubviews {
-    
     [super layoutSubviews];
     
     _scrollView.frame = self.bounds;
@@ -251,12 +275,16 @@
     CGFloat bottomContainerHeight = 25;
     CGFloat pageControlDotWidth = 15;
     if (!_describeArray || _describeArray.count == 0) {
-        _pageControl.frame = CGRectMake(width * 0.5 - _pageControl.numberOfPages * pageControlDotWidth * 0.5, height - bottomContainerHeight,
-                                        _pageControl.numberOfPages * pageControlDotWidth, bottomContainerHeight);
+        _pageControl.frame = CGRectMake(width * 0.5 - _pageControl.numberOfPages * pageControlDotWidth * 0.5,
+                                        height - bottomContainerHeight,
+                                        _pageControl.numberOfPages * pageControlDotWidth,
+                                        bottomContainerHeight);
     } else {
         _bottomContainer.frame = CGRectMake(0, height - bottomContainerHeight, width, bottomContainerHeight);
-        _pageControl.frame = CGRectMake(width - _pageControl.numberOfPages * pageControlDotWidth - 5, height - bottomContainerHeight,
-                                        _pageControl.numberOfPages * pageControlDotWidth, bottomContainerHeight);
+        _pageControl.frame = CGRectMake(width - _pageControl.numberOfPages * pageControlDotWidth - 5,
+                                        height - bottomContainerHeight,
+                                        _pageControl.numberOfPages * pageControlDotWidth,
+                                        bottomContainerHeight);
         _descLabel.frame = CGRectMake(5, 0, width - 10, bottomContainerHeight);
     }
 }
@@ -264,15 +292,12 @@
 #pragma mark - Timer
 
 - (void)startAutoPagingTimer {
-    
     if (self.images.count <= 1) {
         return;
     }
-    
     if (_autoPagingTimer) {
         [self stopAutoPagingTimer];
     }
-    
     _autoPagingTimer = [NSTimer timerWithTimeInterval:_autoPagingInterval == 0 ? 5.0 : _autoPagingInterval
                                                target:self
                                              selector:@selector(nextPage)
@@ -282,7 +307,6 @@
 }
 
 - (void)stopAutoPagingTimer {
-    
     if (_autoPagingTimer) {
         [_autoPagingTimer invalidate];
         _autoPagingTimer = nil;
@@ -292,33 +316,29 @@
 #pragma mark - Actions
 
 - (void)nextPage {
-    
     CGFloat width = _scrollView.frame.size.width;
     [_scrollView setContentOffset:CGPointMake(width * 2, 0) animated:YES];
 }
 
 - (void)didTapCurrentImageView {
-    
-    if ([self.delegate respondsToSelector:@selector(didTapCarouselViewAtIndex:)]) {
-        [self.delegate didTapCarouselViewAtIndex:self.currentIndex];
-    }
-    
     if (self.block) {
         self.block(self.currentIndex);
+    }
+    if ([self.delegate respondsToSelector:@selector(carouselViewDidTapCarouselViewAtIndex:)]) {
+        [self.delegate carouselViewDidTapCarouselViewAtIndex:self.currentIndex];
     }
 }
 
 #pragma mark - UIScrollViewDelegate
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGFloat width = _scrollView.frame.size.width;
+    CGFloat height = _scrollView.frame.size.height;
     
     CGFloat offsetX = scrollView.contentOffset.x;
-    CGFloat width = _scrollView.frame.size.width;
     if (offsetX == width) {
         return;
     }
-    
-    CGFloat height = _scrollView.frame.size.height;
     
     if (offsetX > width) {
         _nextImageView.frame = CGRectMake(CGRectGetMaxX(_currentImageView.frame), 0, width, height);
@@ -344,39 +364,34 @@
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView {
-    
     [self stopAutoPagingTimer]; // stop timer when dragging scrollview manually
 }
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate {
-    
     [self startAutoPagingTimer]; // start timer when stop dragging scrollview manually
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
-    
     [self updateContent]; // update content when paging finishes manually
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView {
-    
     [self updateContent]; // update content when paging finishes automatically
 }
 
 - (void)updateContent {
-    
     CGFloat width = _scrollView.frame.size.width;
+    
     if (_scrollView.contentOffset.x == width) { // if paging not finished do not update content
         return;
     }
-    CGFloat height = _scrollView.frame.size.height;
     
     _currentIndex = _nextIndex;
-    _pageControl.currentPage = _currentIndex;
-    
-    self.descLabel.text = self.describeArray[self.currentIndex];
     _currentImageView.image = _nextImageView.image;
-    _currentImageView.frame = CGRectMake(width, 0, width, height);
+    _pageControl.currentPage = _currentIndex;
+    if (self.describeArray.count > 0) {
+        self.descLabel.text = self.describeArray[_currentIndex];
+    }
     
     [_scrollView setContentOffset:CGPointMake(width, 0) animated:NO];
 }
@@ -384,7 +399,6 @@
 #pragma mark - Public Methods
 
 - (void)setCurrentPageIndicatorTintColor:(UIColor *)currentPageIndicatorTintColor {
-    
     if (_currentPageIndicatorTintColor != currentPageIndicatorTintColor) {
         _currentPageIndicatorTintColor = currentPageIndicatorTintColor;
         _pageControl.currentPageIndicatorTintColor = currentPageIndicatorTintColor;
@@ -392,7 +406,6 @@
 }
 
 - (void)setPageIndicatorTintColor:(UIColor *)pageIndicatorTintColor {
-    
     if (_pageIndicatorTintColor != pageIndicatorTintColor) {
         _pageIndicatorTintColor = pageIndicatorTintColor;
         _pageControl.pageIndicatorTintColor = pageIndicatorTintColor;
@@ -400,7 +413,6 @@
 }
 
 - (void)setCurrentPageIndicatorImage:(UIImage *)currentPageIndicatorImage {
-    
     if (_currentPageIndicatorImage != currentPageIndicatorImage) {
         _currentPageIndicatorImage = currentPageIndicatorImage;
         [_pageControl setValue:currentPageIndicatorImage forKey:@"currentPageImage"];
@@ -408,7 +420,6 @@
 }
 
 - (void)setPageIndicatorImage:(UIImage *)pageIndicatorImage {
-    
     if (_pageIndicatorImage != pageIndicatorImage) {
         _pageIndicatorImage = pageIndicatorImage;
         [_pageControl setValue:pageIndicatorImage forKey:@"pageImage"];
@@ -416,16 +427,17 @@
 }
 
 - (void)setAutoPagingInterval:(NSTimeInterval)autoPagingInterval {
-    
     if (_autoPagingInterval != autoPagingInterval) {
         _autoPagingInterval = autoPagingInterval;
         [self startAutoPagingTimer];
     }
 }
 
-@end
++ (void)clearCachedImages {
+    [SRCarouselImageManager clearCachedImages];
+}
 
-#pragma mark -
+@end
 
 #define SRImagesDirectory      [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] \
 stringByAppendingPathComponent:NSStringFromClass([self class])]
@@ -443,7 +455,6 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
 @implementation SRCarouselImageManager
 
 + (void)load {
-    
     NSString *imagesDirectory = SRImagesDirectory;
     BOOL isDirectory = NO;
     NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -454,7 +465,6 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
 }
 
 - (NSMutableDictionary *)redownloadManager {
-    
     if (!_redownloadManager) {
         _redownloadManager = [NSMutableDictionary dictionary];
     }
@@ -462,15 +472,13 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
 }
 
 - (instancetype)init {
-    
     if (self = [super init]) {
         _repeatCountWhenDownloadFailed = 2;
     }
     return self;
 }
 
-- (UIImage *)imageFromSandboxWithImageURLString:(NSString *)imageURLString {
-    
+- (UIImage *)imageFromSandbox:(NSString *)imageURLString {
     NSString *imagePath = SRImagePath(imageURLString);
     NSData *data = [NSData dataWithContentsOfFile:imagePath];
     if (data.length > 0 ) {
@@ -481,21 +489,19 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
     return nil;
 }
 
-- (void)downloadImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex {
-    
-    UIImage *image = [self imageFromSandboxWithImageURLString:imageURLString];
+- (void)downloadImage:(NSString *)imageURLString index:(NSInteger)imageIndex {
+    UIImage *image = [self imageFromSandbox:imageURLString];
     if (image) {
         if (self.downloadImageSuccess) {
             self.downloadImageSuccess(image, imageIndex);
         }
         return;
     }
-    
     [[[NSURLSession sharedSession] dataTaskWithURL:[NSURL URLWithString:imageURLString]
                                  completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
                                      dispatch_async(dispatch_get_main_queue(), ^{
                                          if (error) {
-                                             [self redownloadWithImageURLString:imageURLString imageIndex:imageIndex error:error];
+                                             [self redownloadImage:imageURLString index:imageIndex error:error];
                                              return;
                                          }
                                          UIImage *image = [UIImage imageWithData:data];
@@ -512,13 +518,12 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
                                  }] resume];
 }
 
-- (void)redownloadWithImageURLString:(NSString *)imageURLString imageIndex:(NSInteger)imageIndex error:(NSError *)error {
-    
+- (void)redownloadImage:(NSString *)imageURLString index:(NSInteger)imageIndex error:(NSError *)error {
     NSNumber *redownloadNumber = self.redownloadManager[imageURLString];
     NSInteger redownloadTimes = redownloadNumber ? redownloadNumber.integerValue : 0;
     if (self.repeatCountWhenDownloadFailed > redownloadTimes) {
         self.redownloadManager[imageURLString] = @(++redownloadTimes);
-        [self downloadImageURLString:imageURLString imageIndex:imageIndex];
+        [self downloadImage:imageURLString index:imageIndex];
         return;
     }
     if (self.downloadImageFailure) {
@@ -527,7 +532,6 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
 }
 
 + (void)clearCachedImages {
-    
     NSFileManager *fileManager = [NSFileManager defaultManager];
     NSArray *fileNames = [fileManager contentsOfDirectoryAtPath:SRImagesDirectory error:nil];
     for (NSString *fileName in fileNames) {

@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		685FD2C02148EF5D000ED53D /* placeholder.png in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BA2148EF5D000ED53D /* placeholder.png */; };
+		685FD2C12148EF5D000ED53D /* logo02.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BB2148EF5D000ED53D /* logo02.jpg */; };
+		685FD2C22148EF5D000ED53D /* logo03.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BC2148EF5D000ED53D /* logo03.jpg */; };
+		685FD2C32148EF5D000ED53D /* logo05.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BD2148EF5D000ED53D /* logo05.jpg */; };
+		685FD2C42148EF5D000ED53D /* logo04.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BE2148EF5D000ED53D /* logo04.jpg */; };
+		685FD2C52148EF5D000ED53D /* logo01.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 685FD2BF2148EF5D000ED53D /* logo01.jpg */; };
 		68E05AE21D7AC0BF00F214D5 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE11D7AC0BF00F214D5 /* main.m */; };
 		68E05AE51D7AC0BF00F214D5 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE41D7AC0BF00F214D5 /* AppDelegate.m */; };
 		68E05AE81D7AC0C000F214D5 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68E05AE71D7AC0BF00F214D5 /* ViewController.m */; };
@@ -17,6 +23,12 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		685FD2BA2148EF5D000ED53D /* placeholder.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = placeholder.png; sourceTree = "<group>"; };
+		685FD2BB2148EF5D000ED53D /* logo02.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo02.jpg; sourceTree = "<group>"; };
+		685FD2BC2148EF5D000ED53D /* logo03.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo03.jpg; sourceTree = "<group>"; };
+		685FD2BD2148EF5D000ED53D /* logo05.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo05.jpg; sourceTree = "<group>"; };
+		685FD2BE2148EF5D000ED53D /* logo04.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo04.jpg; sourceTree = "<group>"; };
+		685FD2BF2148EF5D000ED53D /* logo01.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = logo01.jpg; sourceTree = "<group>"; };
 		68E05ADD1D7AC0BF00F214D5 /* SRCarouselViewDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SRCarouselViewDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68E05AE11D7AC0BF00F214D5 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -42,6 +54,19 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		685FD2B92148EEE1000ED53D /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				685FD2BF2148EF5D000ED53D /* logo01.jpg */,
+				685FD2BB2148EF5D000ED53D /* logo02.jpg */,
+				685FD2BC2148EF5D000ED53D /* logo03.jpg */,
+				685FD2BE2148EF5D000ED53D /* logo04.jpg */,
+				685FD2BD2148EF5D000ED53D /* logo05.jpg */,
+				685FD2BA2148EF5D000ED53D /* placeholder.png */,
+			);
+			name = Resource;
+			sourceTree = "<group>";
+		};
 		68E05AD41D7AC0BF00F214D5 = {
 			isa = PBXGroup;
 			children = (
@@ -73,6 +98,7 @@
 		68E05AE01D7AC0BF00F214D5 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				685FD2B92148EEE1000ED53D /* Resource */,
 				68E05AE11D7AC0BF00F214D5 /* main.m */,
 				68E05AE31D7AC0BF00F214D5 /* AppDelegate.h */,
 				68E05AE41D7AC0BF00F214D5 /* AppDelegate.m */,
@@ -124,7 +150,7 @@
 				TargetAttributes = {
 					68E05ADC1D7AC0BF00F214D5 = {
 						CreatedOnToolsVersion = 7.3;
-						DevelopmentTeam = Y4FK8UXDXW;
+						DevelopmentTeam = L8C6M6B8E9;
 						ProvisioningStyle = Manual;
 					};
 				};
@@ -153,8 +179,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				6EBF581C1EB1164600B2B986 /* LaunchScreen.storyboard in Resources */,
+				685FD2C02148EF5D000ED53D /* placeholder.png in Resources */,
+				685FD2C12148EF5D000ED53D /* logo02.jpg in Resources */,
+				685FD2C22148EF5D000ED53D /* logo03.jpg in Resources */,
 				68E05AED1D7AC0C000F214D5 /* Assets.xcassets in Resources */,
+				685FD2C52148EF5D000ED53D /* logo01.jpg in Resources */,
 				68E05AEB1D7AC0C000F214D5 /* Main.storyboard in Resources */,
+				685FD2C42148EF5D000ED53D /* logo04.jpg in Resources */,
+				685FD2C32148EF5D000ED53D /* logo05.jpg in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,14 +308,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Y4FK8UXDXW;
+				DEVELOPMENT_TEAM = L8C6M6B8E9;
 				INFOPLIST_FILE = SRCarouselViewDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRCarouselViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "eb3e9d11-ff42-45c6-a6ca-4d894764a608";
-				PROVISIONING_PROFILE_SPECIFIER = PPForAll;
+				PROVISIONING_PROFILE = "96079369-07f1-4278-b161-c73a21b11f47";
+				PROVISIONING_PROFILE_SPECIFIER = "PP For All";
 			};
 			name = Debug;
 		};
@@ -291,14 +323,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = Y4FK8UXDXW;
+				DEVELOPMENT_TEAM = L8C6M6B8E9;
 				INFOPLIST_FILE = SRCarouselViewDemo/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.willing.SRCarouselViewDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "eb3e9d11-ff42-45c6-a6ca-4d894764a608";
-				PROVISIONING_PROFILE_SPECIFIER = PPForAll;
+				PROVISIONING_PROFILE = "96079369-07f1-4278-b161-c73a21b11f47";
+				PROVISIONING_PROFILE_SPECIFIER = "PP For All";
 			};
 			name = Release;
 		};
