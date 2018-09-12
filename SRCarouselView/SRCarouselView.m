@@ -442,9 +442,9 @@
 #define SRImagesDirectory      [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] \
 stringByAppendingPathComponent:NSStringFromClass([self class])]
 
-#define SRImageName(URLString) [URLString lastPathComponent]
+//#define SRImageName(URLString) [URLString lastPathComponent]
 
-#define SRImagePath(URLString) [SRImagesDirectory stringByAppendingPathComponent:SRImageName(URLString)]
+//#define SRImagePath(URLString) [SRImagesDirectory stringByAppendingPathComponent:SRImageName(URLString)]
 
 @interface SRCarouselImageManager ()
 
@@ -464,6 +464,21 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
     }
 }
 
+- (NSString *)imagePath:(NSString *)URLString {
+    NSString *imageName = nil;
+    NSString *query = [NSURL URLWithString:URLString].query;
+    if (query) {
+        // https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?x-oss-process=image/format,png
+        // https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?
+        // https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg
+        // 9535a537ad2538d53ec1a351deff3856_jpg.jpg
+        imageName = [URLString stringByReplacingOccurrencesOfString:query withString:@""];
+        imageName = [imageName stringByReplacingOccurrencesOfString:@"?" withString:@""];
+    }
+    imageName = imageName.lastPathComponent;
+    return [SRImagesDirectory stringByAppendingPathComponent:imageName];
+}
+
 - (NSMutableDictionary *)redownloadManager {
     if (!_redownloadManager) {
         _redownloadManager = [NSMutableDictionary dictionary];
@@ -479,7 +494,7 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
 }
 
 - (UIImage *)imageFromSandbox:(NSString *)imageURLString {
-    NSString *imagePath = SRImagePath(imageURLString);
+    NSString *imagePath = [self imagePath:imageURLString];
     NSData *data = [NSData dataWithContentsOfFile:imagePath];
     if (data.length > 0 ) {
         return [UIImage imageWithData:data];
@@ -511,7 +526,7 @@ stringByAppendingPathComponent:NSStringFromClass([self class])]
                                          if (self.downloadImageSuccess) {
                                              self.downloadImageSuccess(image, imageIndex);
                                          }
-                                         if (![data writeToFile:SRImagePath(imageURLString) atomically:YES]) {
+                                         if (![data writeToFile:[self imagePath:imageURLString] atomically:YES]) {
                                              NSLog(@"writeToFile Failed!");
                                          }
                                      });

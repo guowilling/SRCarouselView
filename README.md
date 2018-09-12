@@ -6,7 +6,7 @@ A carousel view that only uses two UIImageView to achieve infinite carousel.
 
 ## Features
 
-* [x] Creates with an array that can contain local images, network images or both of them. 
+* [x] Creates with an array that can contain local image, network image or both of them. 
 * [x] Not rely on any third-party libraries, use the native api to download and cache image.
 * [x] UIPageControl will be displayed on the right If there are descriptions, otherwise displayed on the center. 
 
@@ -45,12 +45,12 @@ A carousel view that only uses two UIImageView to achieve infinite carousel.
 ## Usage
 
 ````objc
-// Local Images.
-NSArray *imageArray = @[[UIImage imageNamed:@"logo01"],
-                        [UIImage imageNamed:@"logo02"],
-                        [UIImage imageNamed:@"logo03"],
-                        [UIImage imageNamed:@"logo04"],
-                        [UIImage imageNamed:@"logo05"]];
+// local images
+NSArray *imageArray = @[[UIImage imageNamed:@"logo01.jpg"],
+                        [UIImage imageNamed:@"logo02.jpg"],
+                        [UIImage imageNamed:@"logo03.jpg"],
+                        [UIImage imageNamed:@"logo04.jpg"],
+                        [UIImage imageNamed:@"logo05.jpg"]];
 NSMutableArray *describeArray = [[NSMutableArray alloc] init];
 for (NSInteger i = 0; i < imageArray.count; i++) {
     NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i + 1];
@@ -63,12 +63,12 @@ carouselView.autoPagingInterval = 10.0;
 ````
 
 ````objc
-// Network Images.
-NSArray *imageArray = @[@"http://i4.buimg.com/593517/ad2538d53ec1a351.jpg",
-                        @"http://i1.piimg.com/593517/25a7b62e81cafc4e.jpg",
-                        @"http://i1.piimg.com/593517/c3412974369d544a.jpg",
-                        @"http://i1.piimg.com/593517/d057e12c45ecbcb7.jpg",
-                        @"http://i1.piimg.com/593517/560715fb9a38df95.jpg"];
+// network images
+NSArray *imageArray = @[@"https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?x-oss-process=image/format,png",
+                        @"https://yixunfiles-ali.yixun.arhieason.com/8f8b02a025a7b62e81cafc4e9d89f70e_jpg.jpg?x-oss-process=image/format,png",
+                        @"https://yixunfiles-ali.yixun.arhieason.com/6c72618dc3412974369d544a2734d5cb_jpg.jpg?x-oss-process=image/format,png",
+                        @"https://yixunfiles-ali.yixun.arhieason.com/63a0bb8cd057e12c45ecbcb7f24e4ecf_jpg.jpg?x-oss-process=image/format,png",
+                        @"https://yixunfiles-ali.yixun.arhieason.com/2393d812560715fb9a38df9550b1f749_jpg.jpg?x-oss-process=image/format,png"];
 NSMutableArray *describeArray = [[NSMutableArray alloc] init];
 for (NSInteger i = 0; i < imageArray.count; i++) {
     NSString *tempDesc = [NSString stringWithFormat:@"Image Description %zd", i];
@@ -82,12 +82,12 @@ carouselView.frame = CGRectMake(0, 245, self.view.frame.size.width, 200);
 ````
 
 ````objc
-// Local and Network Images.
-NSArray *imageArray = @[@"http://i4.buimg.com/593517/ad2538d53ec1a351.jpg",
-                        @"http://i1.piimg.com/593517/25a7b62e81cafc4e.jpg",
-                        [UIImage imageNamed:@"logo03"],
-                        [UIImage imageNamed:@"logo04"],
-                        [UIImage imageNamed:@"logo05"]];
+// local and network Images
+NSArray *imageArray = @[@"https://yixunfiles-ali.yixun.arhieason.com/9535a537ad2538d53ec1a351deff3856_jpg.jpg?x-oss-process=image/format,png",
+                        @"https://yixunfiles-ali.yixun.arhieason.com/8f8b02a025a7b62e81cafc4e9d89f70e_jpg.jpg?x-oss-process=image/format,png",
+                        [UIImage imageNamed:@"logo03.jpg"],
+                        [UIImage imageNamed:@"logo04.jpg"],
+                        [UIImage imageNamed:@"logo05.jpg"]];
 NSMutableArray *describeArray = [[NSMutableArray alloc] init];
 for (NSInteger i = 0; i < imageArray.count; i++) {
     NSString *tempDesc = [NSString stringWithFormat:@"Image Description"];
